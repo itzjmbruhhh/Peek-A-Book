@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+.logo {
+    @apply font-[--font-logo] text-5xl;
+}
+
+.nav-container {
+    @apply border w-full;
+}
+
+.nav-items {
+    @apply flex flex-row justify-between;
+}
+
+.nav-links-mobile {
+    @apply mb-6 text-2xl font-[--font-logo];
+}

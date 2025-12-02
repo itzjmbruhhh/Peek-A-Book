@@ -1,10 +1,20 @@
 @import "tailwindcss";
 
+@font-face {
+    font-family: 'CooperBT';
+    src: url('assets/fonts/CooperBT.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
   --color-red: #FF5757;
+  --font-logo: 'CooperBT' sans-serif;
+  --font-all: 'Poppins', sans-serif;
 
+  font-family: var(--font-all);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
