@@ -1,15 +1,42 @@
 import "./App.css";
 import Home from "./pages/Home";
 import Recommendations from "./pages/Recommendations";
-import { Routes, Route } from "react-router-dom";
+import PageTransitions from "./components/PageTransition";
+import { Routes, Route, useLocation } from "react-router-dom";
+import { AnimatePresence } from "framer-motion";
 
 function App() {
+  const location = useLocation();
+
   return (
-    <Routes>
-      <Route path="/" element={<Home />}></Route>
-      <Route path="/recommendations" element={<Recommendations />}></Route>
-      <Route path="/about" element={<Recommendations />}></Route>
-    </Routes>
+    <AnimatePresence mode="wait">
+      <Routes location={location} key={location.pathname}>
+        <Route
+          path="/"
+          element={
+            <PageTransitions>
+              <Home />
+            </PageTransitions>
+          }
+        />
+        <Route
+          path="/recommendations"
+          element={
+            <PageTransitions>
+              <Recommendations />
+            </PageTransitions>
+          }
+        />
+        <Route
+          path="/about"
+          element={
+            <PageTransitions>
+              {/* <About /> */}
+            </PageTransitions>
+          }
+        />
+      </Routes>
+    </AnimatePresence>
   );
 }
 
