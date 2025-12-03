@@ -1,9 +1,10 @@
 import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 import "../styles/pages/Home.css"
 
 function Home() {
   return (
-    <section id="Home" className="w-full min-h-screen">
+    <section id="Home">
       <Navbar />
 
       <div className="wrapper w-full">
@@ -17,7 +18,7 @@ function Home() {
 
           {/* Instructions Start */}
           <div className="mt-10">
-            <h2 className="font-medium text-2xl md:text-3xl xl:text-4xl">How it Works</h2>
+            <h2 className="font-medium text-2xl md:text-3xl xl:text-4xl md:ml-5 xl:ml-15 md:mb-8 xl:mb-10">How it Works</h2>
 
             <div className="steps-container">
               {/* Step 1 */}
@@ -51,15 +52,16 @@ function Home() {
           </div>
           {/* Instructions End */}
 
-          {/* Proceed Button Start */}
-          <div className="border mt-10 flex justify-center align-middle">
-            <button>
-              Proceed
+          {/* Get Started Button Start */}
+          <div className="mt-10 flex justify-center align-middle">
+            <button className="getStarted">
+              Get Started
             </button>
           </div>
-          {/* Proceed Button End */}
+          {/* Get Started Button End */}
 
         </div>
+        <Footer />
     </section>
   );
 }

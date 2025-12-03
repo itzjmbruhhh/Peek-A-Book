@@ -1,25 +1,33 @@
 @import "tailwindcss";
 
 .number {
-    @apply border border-(--color-red) bg-(--color-red) my-auto rounded-full p-2 min-w-[50px] min-h-[50px] max-w-[50px] max-h-[50px] md:min-w-15 md:min-h-15 xl:min-w-20 xl:min-h-20 text-2xl xl:text-4xl flex items-center justify-center font-bold xl:mx-auto md:mx-auto;
+  @apply border border-(--color-red) bg-(--color-red) my-auto rounded-full p-2 min-w-[50px] min-h-[50px] max-w-[50px] max-h-[50px] md:min-w-15 md:min-h-15 xl:min-w-20 xl:min-h-20 text-2xl xl:text-4xl flex items-center justify-center font-bold xl:mx-auto md:mx-auto;
 }
 
 .instruction-card {
-    @apply flex mt-4 md:flex-col xl:flex-col gap-3 md:justify-center xl:justify-center md:text-center xl:text-center md:min-w-[200px] xl:max-w-[400px] xl:min-w-[400px];
+  @apply flex mt-4 md:flex-col xl:flex-col gap-3 md:justify-center xl:justify-center md:text-center xl:text-center md:min-w-[200px] xl:max-w-[400px] xl:min-w-[400px];
 }
 
 .instructions-container {
-    @apply flex-col align-top w-full;
+  @apply flex-col align-top w-full;
 }
 
 .instruction-title {
-    @apply font-semibold text-[18px] md:text-2xl xl:text-3xl;
+  @apply font-semibold text-[18px] md:text-2xl xl:text-3xl;
 }
 
 .instruction-detail {
-    @apply text-[10px] md:text-[14px] xl:text-[18px] font-light text-(--color-gray);
+  @apply text-[10px] md:text-[14px] xl:text-[18px] font-light text-(--color-gray);
 }
 
 .steps-container {
-    @apply flex flex-col md:flex-row md:justify-center xl:flex-row xl:justify-center md:gap-15 xl:gap-25
+  @apply flex flex-col md:flex-row md:justify-center xl:flex-row xl:justify-center md:gap-15 xl:gap-25;
+}
+
+.getStarted {
+  @apply border border-(--color-red) bg-(--color-red) py-3 px-10 rounded-full cursor-pointer md:py-5 md:px-11 md:text-xl xl:py-5 xl:px-12 xl:text-2xl md:mt-8 xl:mt-10;
+}
+
+.getStarted:hover {
+  @apply border border-(--color-red-dark) bg-(--color-red-dark) transition-all duration-200 shadow-2xl;
 }
