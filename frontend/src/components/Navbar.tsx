@@ -2,6 +2,7 @@ import { useTheme } from "../hooks/useTheme";
 import Overlay from "./Overlay";
 import { useEffect, useState } from "react";
 import "../styles/components/Navbar.css";
+import { Link, useLocation } from "react-router-dom";
 
 function Navbar() {
   // This handles dark/light mode
@@ -10,91 +11,68 @@ function Navbar() {
   // useState for Mobile Menu
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  // Active listener for nav-links
-  const [ activeSection, setActiveSection] = useState("Home");
+  // Active link state (derived from route). Default to Home.
+  const [activeSection, setActiveSection] = useState("Home");
+  const location = useLocation();
 
   useEffect(() => {
-    const sections = document.querySelectorAll<HTMLElement>("section");
-    const navLinks = document.querySelectorAll<HTMLAnchorElement>(".nav-link");
-
-    function updateActiveLink() {
-      let current = "";
-
-      sections.forEach((section) => {
-        const sectionTop = section.offsetTop;
-        if (window.scrollY >= sectionTop - 50) {
-          // use the `id` property which is always a string (empty string if not set)
-          current = section.id || "";
-        }
-      });
-
-      setActiveSection(current);
-
-      navLinks.forEach((link) => {
-        link.classList.remove("active");
-        const href = link.getAttribute("href") || "";
-        if (href === `#${current}`) {
-          link.classList.add("active");
-        }
-      });
+    const path = location.pathname || "/";
+    if (path === "/") {
+      setActiveSection("Home");
+    } else if (path.startsWith("/recommendations")) {
+      setActiveSection("Recommendations");
+    } else if (path.startsWith("/about")) {
+      setActiveSection("About");
+    } else {
+      setActiveSection("");
     }
+  }, [location.pathname]);
 
-    window.addEventListener("scroll", updateActiveLink);
-
-    return () => {
-      window.removeEventListener("scroll", updateActiveLink);
-    };
+  const [isScrolled, setIsScrolled] = useState(false);
+  // Scroll effect
+  useEffect(() => {
+    const handleScroll = () => setIsScrolled(window.scrollY > 50);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  useEffect(() => {
-    const element = document.getElementById(activeSection);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
-  }, [activeSection]);
-
-
-    const [isScrolled, setIsScrolled] = useState(false);
-    // Scroll effect
-    useEffect(() => {
-      const handleScroll = () => setIsScrolled(window.scrollY > 50);
-      window.addEventListener("scroll", handleScroll);
-      return () => window.removeEventListener("scroll", handleScroll);
-    }, []);
-
   return (
-    <header className={`nav-container ${isMenuOpen ? "" : (isScrolled ? "scrolled" : '')}`}>
+    <header
+      className={`nav-container ${
+        isMenuOpen ? "" : isScrolled ? "scrolled" : ""
+      }`}
+    >
       <div className="nav-items">
         {/* Logo Start */}
         <div>
-          <a href="#">
+          <Link to="/">
             <h1 className="logo">Peek-A-Book</h1>
-          </a>
+          </Link>
         </div>
         {/* Logo End */}
 
         {/* Nav Link MD/XL Start */}
         <nav className="nav-links-container">
-          <a
-            href="#Home"
+          <Link
+            to="/"
             className={`nav-link ${activeSection === "Home" ? "active" : ""}`}
           >
             Home
-          </a>
-          <a
-            href="#Recommendations"
+          </Link>
+          <Link
+            to="/recommendations"
             className={`nav-link ${
               activeSection === "Recommendations" ? "active" : ""
             }`}
           >
             Recommendations
-          </a>
-          <a
-            href="#About"
+          </Link>
+          <Link
+            to="/about"
             className={`nav-link ${activeSection === "About" ? "active" : ""}`}
           >
             About
-          </a>
+          </Link>
           {/* Sun and Moon Icon */}
           <div>
             <button onClick={toggle} className="cursor-pointer">
@@ -146,15 +124,30 @@ function Navbar() {
           </div>
 
           {/* Nav Links */}
-          <a href="#Home" className={`nav-link mobile ${activeSection === "Home" ? "active" : ""}`}>
+          <Link
+            to="/"
+            className={`nav-link mobile ${
+              activeSection === "Home" ? "active" : ""
+            }`}
+          >
             Home
-          </a>
-          <a href="#Recommendations" className={`nav-link mobile ${activeSection === "Recommendations" ? "active" : ""}`}>
+          </Link>
+          <Link
+            to="/recommendations"
+            className={`nav-link mobile ${
+              activeSection === "Recommendations" ? "active" : ""
+            }`}
+          >
             Recommendations
-          </a>
-          <a href="#About" className={`nav-link mobile ${activeSection === "About" ? "active" : ""}`}>
+          </Link>
+          <Link
+            to="/about"
+            className={`nav-link mobile ${
+              activeSection === "About" ? "active" : ""
+            }`}
+          >
             About
-          </a>
+          </Link>
         </nav>
         {/* Mobile Menu End */}
       </div>
