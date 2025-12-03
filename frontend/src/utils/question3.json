@@ -1,0 +1,37 @@
+[
+  {
+    "id" : "experience_1",
+    "option": "Short, quick reads"
+  },
+  {
+    "id" : "experience_2",
+    "option": "Long, immersive books"
+  },
+  {
+    "id" : "experience_3",
+    "option": "Character-driven"
+  },
+  {
+    "id" : "experience_4",
+    "option": "Plot-driven"
+  },
+  {
+    "id" : "experience_5",
+    "option": "Idea-driven"
+  },
+  {
+    "id" : "experience_6",
+    "option": "Visual/illustrated"
+  }
+]
+
+
+
+
+
+
+
+
+
+
+

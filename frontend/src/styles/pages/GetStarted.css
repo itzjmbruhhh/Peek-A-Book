@@ -7,3 +7,11 @@
 .h4 {
     @apply md:ml-5 xl:ml-15 text-(--color-gray) text-sm
 }
+
+.checkbox-container {
+    @apply flex flex-col md:space-x-20 md:flex-row md:flex-wrap md:gap-4 md:ml-15 xl:flex-row xl:flex-wrap p-6 gap-4 xl:gap-6 xl:ml-45
+}
+
+.checkbox {
+    @apply flex items-center w-full md:w-1/3 xl:w-1/4
+}
