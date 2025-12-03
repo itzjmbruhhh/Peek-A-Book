@@ -71,10 +71,7 @@ function GetStarted() {
           {/* Checkbox container */}
           <div className="checkbox-container">
             {questions_1.map((option: Question, index) => (
-              <label
-                key={option.id}
-                className="checkbox"
-              >
+              <label key={option.id} className="checkbox">
                 <input
                   type="checkbox"
                   value={option.id}
@@ -101,10 +98,7 @@ function GetStarted() {
           {/* Checkbox container */}
           <div className="checkbox-container">
             {questions_2.map((option: Question, index) => (
-              <label
-                key={option.id}
-                className="checkbox"
-              >
+              <label key={option.id} className="checkbox">
                 <input
                   type="checkbox"
                   value={option.id}
@@ -131,10 +125,7 @@ function GetStarted() {
           {/* Checkbox container */}
           <div className="checkbox-container">
             {questions_3.map((option: Question, index) => (
-              <label
-                key={option.id}
-                className="checkbox"
-              >
+              <label key={option.id} className="checkbox">
                 <input
                   type="checkbox"
                   value={option.id}
@@ -161,10 +152,7 @@ function GetStarted() {
           {/* Checkbox container */}
           <div className="checkbox-container">
             {questions_4.map((option: Question, index) => (
-              <label
-                key={option.id}
-                className="checkbox"
-              >
+              <label key={option.id} className="checkbox">
                 <input
                   type="checkbox"
                   value={option.id}
@@ -181,7 +169,23 @@ function GetStarted() {
         </div>
         {/* Question 4 End */}
 
+        {/* Preset Start */}
+        <div className="border-t mt-10">
+          <div className="checkbox-container xl:ml-10! flex-col!">
+            <label className="checkbox">
+              <input
+                type="checkbox"
+                className="min-w-6 min-h-6 accent-(--color-red) md:w-6 md:h-6 xl:w-8 xl:h-8"
+              />
+              <span className="ml-2 md:text-xl xl:text-2xl font-bold">
+                  Save Preset
+              </span>
+            </label>
+            <input type="text" className="border rounded-[5px] h-10 p-5 md:w-[400px] xl:w-[400px]" placeholder="Name your preset"/>
+          </div>
+        </div>
       </div>
+
     </section>
   );
 }
