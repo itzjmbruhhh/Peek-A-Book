@@ -62,7 +62,6 @@ function Home() {
           {/* Get Started Button End */}
 
         </div>
-        <Footer />
     </section>
   );
 }

@@ -184,8 +184,19 @@ function GetStarted() {
             <input type="text" className="border rounded-[5px] h-10 p-5 md:w-[400px] xl:w-[400px]" placeholder="Name your preset"/>
           </div>
         </div>
-      </div>
+        {/* Preset End */}
 
+        {/* Proceed Button Start */}
+          <div className="flex flex-col items-center md:items-end xl:items-end gap-1 px-2 xl:mr-20">
+            <label className="text-lg font-medium text-(--color-text-primary)">Ready to upload photo?</label>
+            <button className="getStarted mt-0! mx-2">
+              Proceed
+            </button>
+          </div>
+
+        {/* Proceed Button End */}
+
+      </div>
     </section>
   );
 }
