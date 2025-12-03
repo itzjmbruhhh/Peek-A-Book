@@ -19,8 +19,8 @@ function Navbar() {
     const path = location.pathname || "/";
     if (path === "/") {
       setActiveSection("Home");
-    } else if (path.startsWith("/recommendations")) {
-      setActiveSection("Recommendations");
+    } else if (path.startsWith("/get-started")) {
+      setActiveSection("Get-Started");
     } else if (path.startsWith("/about")) {
       setActiveSection("About");
     } else {
@@ -60,12 +60,12 @@ function Navbar() {
             Home
           </Link>
           <Link
-            to="/recommendations"
+            to="/get-started"
             className={`nav-link ${
-              activeSection === "Recommendations" ? "active" : ""
+              activeSection === "Get-Started" ? "active" : ""
             }`}
           >
-            Recommendations
+            Get Started
           </Link>
           <Link
             to="/about"
@@ -133,12 +133,12 @@ function Navbar() {
             Home
           </Link>
           <Link
-            to="/recommendations"
+            to="/get-started"
             className={`nav-link mobile ${
-              activeSection === "Recommendations" ? "active" : ""
+              activeSection === "Get-Started" ? "active" : ""
             }`}
           >
-            Recommendations
+            Get Started
           </Link>
           <Link
             to="/about"
@@ -148,6 +148,15 @@ function Navbar() {
           >
             About
           </Link>
+          <footer className='absolute inset-x-5 bottom-0 text-center align-middle py-3'>
+        <div className="flex flex-row justify-center">
+            <p className="text-[10px]">
+              © {new Date().getFullYear()} JM Reyes. All rights reserved.
+            </p>
+            
+        </div>
+        
+    </footer>
         </nav>
         {/* Mobile Menu End */}
       </div>

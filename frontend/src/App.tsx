@@ -1,6 +1,6 @@
 import "./App.css";
 import Home from "./pages/Home";
-import Recommendations from "./pages/Recommendations";
+import GetStarted from "./pages/GetStarted";
 import PageTransitions from "./components/PageTransition";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
@@ -20,10 +20,10 @@ function App() {
           }
         />
         <Route
-          path="/recommendations"
+          path="/get-started"
           element={
             <PageTransitions>
-              <Recommendations />
+              <GetStarted />
             </PageTransitions>
           }
         />

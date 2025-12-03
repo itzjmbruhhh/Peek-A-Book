@@ -1,5 +1,6 @@
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import { Link } from "react-router-dom";
 import "../styles/pages/Home.css"
 
 function Home() {
@@ -54,9 +55,9 @@ function Home() {
 
           {/* Get Started Button Start */}
           <div className="mt-10 flex justify-center align-middle">
-            <button className="getStarted">
+            <Link to="/get-started" className="getStarted">
               Get Started
-            </button>
+            </Link>
           </div>
           {/* Get Started Button End */}
 
