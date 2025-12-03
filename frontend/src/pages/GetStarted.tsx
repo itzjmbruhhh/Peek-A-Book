@@ -3,10 +3,15 @@ import Footer from "../components/Footer";
 import "../styles/pages/GetStarted.css";
 import { useState } from "react";
 import questions_1 from "../utils/question1.json";
+import questions_2 from "../utils/question2.json";
 
 function GetStarted() {
-
   interface Question {
+    id: string;
+    option: string;
+  }
+
+  interface Question_2 {
     id: string;
     option: string;
   }
@@ -15,8 +20,17 @@ function GetStarted() {
   const [selected, setSelected] = useState<string[]>([]);
 
   const handleChange = (id: string) => {
-    setSelected(prev =>
-      prev.includes(id) ? prev.filter(item => item !== id) : [...prev, id]
+    setSelected((prev) =>
+      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+    );
+  };
+
+  // Add separate state for question 2
+  const [selectedQ2, setSelectedQ2] = useState<string[]>([]);
+
+  const handleChangeQ2 = (id: string) => {
+    setSelectedQ2((prev) =>
+      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
     );
   };
 
@@ -27,12 +41,16 @@ function GetStarted() {
       <div className="wrapper">
         {/* Header */}
         <div>
-          <h1 className="font-bold text-3xl md:text-4xl xl:text-5xl text-left">Get Started</h1>
+          <h1 className="font-bold text-3xl md:text-4xl xl:text-5xl text-left">
+            Get Started
+          </h1>
         </div>
 
         {/* Question 1 Start */}
         <div className="mt-10">
-          <h2 className="h2 question">What kinds of stories or topics do you usually enjoy?</h2>
+          <h2 className="h2 question">
+            What kinds of stories or topics do you usually enjoy?
+          </h2>
           <h4 className="h4">Check all that apply.</h4>
 
           {/* Checkbox container */}
@@ -49,15 +67,47 @@ function GetStarted() {
                   onChange={() => handleChange(option.id)}
                   className="min-w-6 min-h-6 accent-(--color-red) md:w-6 md:h-6 xl:w-8 xl:h-8"
                 />
-                <span className="ml-2 md:text-xl xl:text-2xl">{option.option}</span>
+                <span className="ml-2 md:text-xl xl:text-2xl">
+                  {option.option}
+                </span>
               </label>
             ))}
           </div>
         </div>
         {/* Question 1 End */}
 
-      </div>
+        {/* Question 2 Start */}
+        <div className="mt-10">
+          <h2 className="h2 question">
+            What’s your usual intent when you read?
+          </h2>
+          <h4 className="h4">Check all that apply.</h4>
 
+          {/* Checkbox container */}
+          <div className="checkbox-container flex flex-col md:space-x-20 md:flex-row md:flex-wrap md:gap-4 md:ml-15 xl:flex-row xl:flex-wrap p-6 gap-4 xl:gap-6 xl:ml-15">
+            {questions_2.map((option: Question, index) => (
+              <label
+                key={option.id}
+                className="checkbox flex items-center w-full md:w-1/3 xl:w-1/4"
+              >
+                <input
+                  type="checkbox"
+                  value={option.id}
+                  checked={selectedQ2.includes(option.id)}
+                  onChange={() => handleChangeQ2(option.id)}
+                  className="min-w-6 min-h-6 accent-(--color-red) md:w-6 md:h-6 xl:w-8 xl:h-8"
+                />
+                <span className="ml-2 md:text-xl xl:text-2xl">
+                  {option.option}
+                </span>
+              </label>
+            ))}
+          </div>
+        </div>
+        {/* Question 2 End */}
+
+
+      </div>
     </section>
   );
 }

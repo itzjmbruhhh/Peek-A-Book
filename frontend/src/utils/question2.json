@@ -1,0 +1,34 @@
+[
+  {
+    "id" : "intent_1",
+    "option": "To relax"
+  },
+  {
+    "id" : "intent_2",
+    "option": "To learn something"
+  },
+  {
+    "id" : "intent_3",
+    "option": "To get inspired"
+  },
+  {
+    "id" : "intent_4",
+    "option": "To escape into a story"
+  },
+  {
+    "id" : "intent_5",
+    "option": "To improve a skill"
+  },
+    {
+    "id" : "intent_6",
+    "option": "To challenge myself"
+  },
+  {
+    "id" : "intent_7",
+    "option": "To understand people"
+  },
+  {
+    "id" : "intent_8",
+    "option": "To feel entertained"
+  }
+]
