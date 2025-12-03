@@ -1,5 +1,5 @@
 @import "tailwindcss";
 
 .wrapper {
-    @apply  border-2 xl:m-5 justify-center py-2;
+    @apply mt-25 justify-center p-5 md:p-20 xl:p-20;
 }

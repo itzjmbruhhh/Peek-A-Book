@@ -1,1 +1,25 @@
 @import "tailwindcss";
+
+.number {
+    @apply border border-(--color-red) bg-(--color-red) my-auto rounded-full p-2 min-w-[50px] min-h-[50px] max-w-[50px] max-h-[50px] md:min-w-15 md:min-h-15 xl:min-w-20 xl:min-h-20 text-2xl xl:text-4xl flex items-center justify-center font-bold xl:mx-auto md:mx-auto;
+}
+
+.instruction-card {
+    @apply flex mt-4 md:flex-col xl:flex-col md:justify-center xl:justify-center md:text-center xl:text-center md:max-w-[350px] md:min-w-[350px] xl:max-w-[400px] xl:min-w-[400px];
+}
+
+.instructions-container {
+    @apply flex-col align-top;
+}
+
+.instruction-title {
+    @apply font-semibold text-[18px] md:text-2xl xl:text-3xl;
+}
+
+.instruction-detail {
+    @apply text-[10px] md:text-[14px] xl:text-[18px] font-light text-(--color-gray);
+}
+
+.steps-container {
+    @apply flex flex-col md:flex-row md:justify-center xl:flex-row xl:justify-center md:gap-15 xl:gap-25
+}
