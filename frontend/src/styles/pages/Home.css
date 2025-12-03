@@ -5,11 +5,11 @@
 }
 
 .instruction-card {
-    @apply flex mt-4 md:flex-col xl:flex-col md:justify-center xl:justify-center md:text-center xl:text-center md:max-w-[350px] md:min-w-[350px] xl:max-w-[400px] xl:min-w-[400px];
+    @apply flex mt-4 md:flex-col xl:flex-col gap-3 md:justify-center xl:justify-center md:text-center xl:text-center md:min-w-[200px] xl:max-w-[400px] xl:min-w-[400px];
 }
 
 .instructions-container {
-    @apply flex-col align-top;
+    @apply flex-col align-top w-full;
 }
 
 .instruction-title {

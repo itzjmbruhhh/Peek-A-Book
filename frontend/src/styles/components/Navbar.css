@@ -5,7 +5,7 @@
 }
 
 .nav-container {
-    @apply w-full p-5 xl:p-5 fixed top-0 z-999 transition-all duration-200;
+    @apply w-full p-5 fixed top-0 z-999 transition-all duration-200;
 }
 
 .nav-items {

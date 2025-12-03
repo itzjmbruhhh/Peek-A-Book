@@ -3,10 +3,10 @@ import "../styles/pages/Home.css"
 
 function Home() {
   return (
-    <section id="Home">
-        <Navbar />
+    <section id="Home" className="w-full min-h-screen">
+      <Navbar />
 
-        <div className="wrapper">
+      <div className="wrapper w-full">
           
           {/* Bio Start */}
           <div>
