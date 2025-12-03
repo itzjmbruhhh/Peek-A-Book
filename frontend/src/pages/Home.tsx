@@ -8,6 +8,7 @@ function Home() {
         <Navbar />
       </div>
     </section>
+    <div className="my-[2000px]"> Hello </div>
     </>
 
   );

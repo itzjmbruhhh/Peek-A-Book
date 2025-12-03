@@ -53,8 +53,17 @@ function Navbar() {
     }
   }, [activeSection]);
 
+
+    const [isScrolled, setIsScrolled] = useState(false);
+    // Scroll effect
+    useEffect(() => {
+      const handleScroll = () => setIsScrolled(window.scrollY > 50);
+      window.addEventListener("scroll", handleScroll);
+      return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
+
   return (
-    <nav className="nav-container p-5 xl:p-5">
+    <header className={`nav-container ${isScrolled ? "scrolled" : ''}`}>
       <div className="nav-items">
         {/* Logo Start */}
         <div>
@@ -65,7 +74,7 @@ function Navbar() {
         {/* Logo End */}
 
         {/* Nav Link MD/XL Start */}
-        <div className="hidden md:flex xl:flex gap-20 mx-15 justify-center p-2">
+        <nav className="hidden md:flex xl:flex gap-20 ml-15 justify-center p-2">
           <a
             href="#Home"
             className={`nav-link ${activeSection === "Home" ? "active" : ""}`}
@@ -86,11 +95,11 @@ function Navbar() {
           >
             About
           </a>
-        </div>
+        </nav>
         {/* Nav Link MD/XL End */}
 
         {/* Hamburger Menu Start */}
-        <div className="xl:hidden text-5xl">
+        <div className="md:hidden xl:hidden text-5xl">
           <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="">
             <i className={isMenuOpen ? "hidden" : "las la-bars"}></i>
           </button>
@@ -100,7 +109,7 @@ function Navbar() {
         <Overlay isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
 
         {/* Mobile Menu Start */}
-        <div
+        <nav
           className={`fixed inset-y-0 right-0 w-64 bg-(--color-primary) md:hidden xl:hidden z-50 p-6 flex flex-col transform transition-transform duration-300 ease-out ${
             isMenuOpen
               ? "translate-x-0 pointer-events-auto"
@@ -125,19 +134,19 @@ function Navbar() {
           </div>
 
           {/* Nav Links */}
-          <a href="#Home" className="nav-links-mobile">
+          <a href="#Home" className={`nav-link mobile ${activeSection === "Home" ? "active" : ""}`}>
             Home
           </a>
-          <a href="#Recommendations" className="nav-links-mobile">
+          <a href="#Recommendations" className={`nav-link mobile ${activeSection === "Recommendations" ? "active" : ""}`}>
             Recommendations
           </a>
-          <a href="#About" className="nav-links-mobile">
+          <a href="#About" className={`nav-link mobile ${activeSection === "About" ? "active" : ""}`}>
             About
           </a>
-        </div>
+        </nav>
         {/* Mobile Menu End */}
       </div>
-    </nav>
+    </header>
   );
 }
 

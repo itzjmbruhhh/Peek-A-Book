@@ -5,14 +5,14 @@
 }
 
 .nav-container {
-    @apply border w-full;
+    @apply w-full p-5 xl:p-5 fixed top-0 z-999 transition-all duration-200;
 }
 
 .nav-items {
     @apply flex flex-row justify-between;
 }
 
-.nav-links-mobile {
+.nav-link.mobile {
     @apply mb-6 text-2xl font-[--font-logo];
 }
 
@@ -22,4 +22,8 @@
 
 .nav-link.active {
     @apply underline;
+}
+
+.scrolled {
+    @apply backdrop-blur-lg shadow-xl/20;
 }
