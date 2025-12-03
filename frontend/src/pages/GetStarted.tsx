@@ -1,5 +1,4 @@
 import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
 import "../styles/pages/GetStarted.css";
 import { useState } from "react";
 import questions_1 from "../utils/question1.json";
@@ -44,15 +43,13 @@ function GetStarted() {
   const [selectedQ4, setSelectedQ4] = useState<string[]>([]);
 
   const handleChangeQ4 = (id: string) => {
-    setSelectedQ3((prev) =>
+    setSelectedQ4((prev) =>
       prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
     );
   };
 
   return (
     <section id="Get-Started">
-      <Navbar />
-
       <div className="wrapper">
         {/* Header */}
         <div>

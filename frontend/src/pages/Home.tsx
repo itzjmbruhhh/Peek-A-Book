@@ -1,12 +1,9 @@
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
 import { Link } from "react-router-dom";
 import "../styles/pages/Home.css"
 
 function Home() {
   return (
     <section id="Home">
-      <Navbar />
 
       <div className="wrapper w-full">
           
