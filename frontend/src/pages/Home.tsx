@@ -19,7 +19,7 @@ function Home() {
 
           {/* Instructions Start */}
           <div className="mt-10">
-            <h2 className="font-medium text-2xl md:text-3xl xl:text-4xl md:ml-5 xl:ml-15 md:mb-8 xl:mb-10">How it Works</h2>
+            <h2 className="h2">How it Works</h2>
 
             <div className="steps-container">
               {/* Step 1 */}

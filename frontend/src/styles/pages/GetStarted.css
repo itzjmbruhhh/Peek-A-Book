@@ -1,1 +1,9 @@
 @import "tailwindcss";
+
+.h2.question {
+    @apply mb-0 text-xl md:text-3xl xl:text-3xl
+}
+
+.h4 {
+    @apply md:ml-5 xl:ml-15 text-(--color-gray) text-sm
+}

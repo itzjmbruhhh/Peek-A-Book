@@ -1,0 +1,46 @@
+[
+  {
+    "id" : "fiction",
+    "option": "Fiction"
+  },
+  {
+    "id" : "non-fiction",
+    "option": "Non-Fiction"
+  },
+  {
+    "id" : "mystery_crime",
+    "option": "Mystery / Crime"
+  },
+  {
+    "id" : "sci_fi",
+    "option": "Sci-fi"
+  },
+  {
+    "id" : "historical",
+    "option": "Historical"
+  },
+  {
+    "id" : "biography",
+    "option": "Biography / Memoir"
+  },
+  {
+    "id" : "self",
+    "option": "Self-help / Personal growth"
+  },
+  {
+    "id" : "sci_tech",
+    "option": "Science & Technology"
+  },
+  {
+    "id" : "business",
+    "option": "Business / Economics"
+  },
+  {
+    "id" : "philosophy",
+    "option": "Philosophy"
+  },
+  {
+    "id" : "art",
+    "option": "Art & Creativity"
+  }
+]

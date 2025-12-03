@@ -1,26 +1,60 @@
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import "../styles/pages/GetStarted.css"
+import "../styles/pages/GetStarted.css";
+import { useState } from "react";
+import questions_1 from "../utils/question1.json";
 
 function GetStarted() {
+
+  interface Question {
+    id: string;
+    option: string;
+  }
+
+  // State to track selected checkboxes
+  const [selected, setSelected] = useState<string[]>([]);
+
+  const handleChange = (id: string) => {
+    setSelected(prev =>
+      prev.includes(id) ? prev.filter(item => item !== id) : [...prev, id]
+    );
+  };
+
   return (
     <section id="Get-Started">
-        <Navbar />
+      <Navbar />
 
-            <div className="wrapper">
-                
-                {/* Bio Start */}
-                <div>
-                <h1 className="font-bold text-3xl md:text-4xl xl:text-5xl text-left">Get Started</h1>
-                <p className="font-light text-sm md:text-[14px] xl:text-[18px] text-(--color-gray)">Find the perfect book for every mood.</p>
-                </div>
-                {/* Bio End */}
+      <div className="wrapper">
+        {/* Header */}
+        <div>
+          <h1 className="font-bold text-3xl md:text-4xl xl:text-5xl text-left">Get Started</h1>
+        </div>
 
-            </div>
+        {/* Question 1 */}
+        <div className="mt-10">
+          <h2 className="h2 question">What kinds of stories or topics do you usually enjoy?</h2>
+          <h4 className="h4">Check all that apply.</h4>
 
-        <Footer />
+          {/* Checkbox container */}
+          <div className="checkbox-container flex flex-col p-6 gap-4 xl:ml-15">
+            {questions_1.map((option: Question) => (
+              <label key={option.id} className="checkbox flex items-center">
+                <input
+                  type="checkbox"
+                  value={option.id}
+                  checked={selected.includes(option.id)}
+                  onChange={() => handleChange(option.id)}
+                  className="w-6 h-6 accent-(--color-red) md:w-6 md:h-6 xl:w-8 xl:h-8"
+                />
+                <span className="ml-2 md:text-xl xl:text-2xl">{option.option}</span>
+              </label>
+            ))}
+          </div>
+        </div>
+      </div>
+            
     </section>
-  )
+  );
 }
 
-export default GetStarted
+export default GetStarted;
