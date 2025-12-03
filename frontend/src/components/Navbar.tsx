@@ -63,7 +63,7 @@ function Navbar() {
     }, []);
 
   return (
-    <header className={`nav-container ${isScrolled ? "scrolled" : ''}`}>
+    <header className={`nav-container ${isMenuOpen ? "" : (isScrolled ? "scrolled" : '')}`}>
       <div className="nav-items">
         {/* Logo Start */}
         <div>
@@ -74,7 +74,7 @@ function Navbar() {
         {/* Logo End */}
 
         {/* Nav Link MD/XL Start */}
-        <nav className="hidden md:flex xl:flex gap-20 ml-15 justify-center p-2">
+        <nav className="nav-links-container">
           <a
             href="#Home"
             className={`nav-link ${activeSection === "Home" ? "active" : ""}`}
@@ -95,6 +95,18 @@ function Navbar() {
           >
             About
           </a>
+          {/* Sun and Moon Icon */}
+          <div>
+            <button onClick={toggle} className="cursor-pointer">
+              <i
+                className={
+                  theme === "light"
+                    ? "las la-sun text-4xl"
+                    : "las la-moon text-4xl"
+                }
+              ></i>
+            </button>
+          </div>
         </nav>
         {/* Nav Link MD/XL End */}
 
@@ -110,7 +122,7 @@ function Navbar() {
 
         {/* Mobile Menu Start */}
         <nav
-          className={`fixed inset-y-0 right-0 w-64 bg-(--color-primary) md:hidden xl:hidden z-50 p-6 flex flex-col transform transition-transform duration-300 ease-out ${
+          className={`mobile-menu ${
             isMenuOpen
               ? "translate-x-0 pointer-events-auto"
               : "translate-x-full pointer-events-none"

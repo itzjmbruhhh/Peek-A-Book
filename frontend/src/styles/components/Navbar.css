@@ -12,12 +12,16 @@
     @apply flex flex-row justify-between;
 }
 
+.nav-links-container {
+    @apply hidden md:flex xl:flex gap-15 ml-15 justify-center p-2;
+}
+
 .nav-link.mobile {
     @apply mb-6 text-2xl font-[--font-logo];
 }
 
 .nav-link {
-    @apply text-2xl font-[--font-logo];
+    @apply text-2xl font-[--font-logo] mt-0.5;
 }
 
 .nav-link.active {
@@ -26,4 +30,8 @@
 
 .scrolled {
     @apply backdrop-blur-lg shadow-xl/20;
+}
+
+.mobile-menu {
+    @apply fixed inset-y-0 right-0 w-64 bg-(--color-primary) md:hidden xl:hidden z-50 p-6 flex flex-col transform transition-transform duration-300 ease-out
 }
