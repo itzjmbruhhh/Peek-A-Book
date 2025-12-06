@@ -14,6 +14,9 @@ function Footer() {
           <a href="https://www.github.com/itzjmbruhhh" target="_blank">
             <i className="lab la-github text-xl xl:text-2xl"></i>
           </a>
+          <a href="https://itzjmbruhhh.github.io/itzjmbruhhh-portfolio" target="_blank">
+            <i className="las la-briefcase text-xl xl:text-2xl"></i>
+          </a>
         </div>
       </div>
     </footer>
