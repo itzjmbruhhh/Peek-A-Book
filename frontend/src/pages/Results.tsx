@@ -1,14 +1,18 @@
 import "../styles/pages/Upload-Results.css";
 
-type OverlayProps = {
-  resultsOpen: boolean;
-  setResultsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+type ResultsProps = {
+  onClose: () => void;
 };
 
-function Results({ resultsOpen, setResultsOpen }: OverlayProps) {
-  if (!resultsOpen) return null;
-
-  return <div>HI</div>;
+function Results({ onClose }: ResultsProps) {
+  return (
+    <div className="container">
+      <button onClick={onClose}>
+        <i className="las la-times absolute top-3 right-3 text-3xl"></i>
+        HELLOOO
+      </button>
+    </div>
+  );
 }
 
 export default Results;

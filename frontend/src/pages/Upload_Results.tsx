@@ -3,22 +3,22 @@ import Results from "./Results";
 import Upload from "./Upload";
 import { useEffect, useState } from "react";
 
-type OverlayProps = {
+type Props = {
   uploadOpen: boolean;
   setUploadOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-function Upload_Results({ uploadOpen, setUploadOpen }: OverlayProps) {
-  // Show results overlay useState
-  const [resultsOpen, setResultsOpen] = useState(false);
-
-  if (!uploadOpen && !resultsOpen) return null;
+function Upload_Results({ uploadOpen, setUploadOpen }: Props) {
+  // "upload", "results", or null
+  const [currentModal, setCurrentModal] = useState<"upload" | "results" | null>(
+    "upload"
+  );
 
   const original = document.body.style.overflow;
 
-  // Show upload/results overlay logic — hide body scroll when either modal is open
+  // lock scroll when any modal is open
   useEffect(() => {
-    if (uploadOpen || resultsOpen) {
+    if (currentModal !== null) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = original;
@@ -27,22 +27,31 @@ function Upload_Results({ uploadOpen, setUploadOpen }: OverlayProps) {
     return () => {
       document.body.style.overflow = original;
     };
-  }, [uploadOpen, resultsOpen]);
+  }, [currentModal, original]);
+
+  // When the internal modal state is set to null, notify the parent
+  // so the parent can unmount this component (and clear its uploadOpen flag).
+  useEffect(() => {
+    if (currentModal === null) {
+      setUploadOpen(false);
+    }
+  }, [currentModal, setUploadOpen]);
+
+  if (!uploadOpen) return null;
 
   return (
     <div className="overlay">
-      {/* Upload container */}
-      {uploadOpen && (
+      {/* Upload modal */}
+      {currentModal === "upload" && (
         <Upload
-          uploadOpen={uploadOpen}
-          setUploadOpen={setUploadOpen}
-          setResultsOpen={setResultsOpen}
+          onClose={() => setCurrentModal(null)}
+          onProceed={() => setCurrentModal("results")}
         />
       )}
 
-      {/* Results container */}
-      {resultsOpen && (
-        <Results resultsOpen={resultsOpen} setResultsOpen={setResultsOpen} />
+      {/* Results modal */}
+      {currentModal === "results" && (
+        <Results onClose={() => setCurrentModal(null)} />
       )}
     </div>
   );
