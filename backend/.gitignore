@@ -1,0 +1,48 @@
+# Python
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.egg-info/
+*.egg
+dist/
+build/
+.eggs/
+
+.env
+
+# Virtual environment
+venv/
+ENV/
+env/
+.env/
+
+# Django stuff:
+*.sqlite3
+db.sqlite3
+*.log
+
+# Media
+media/
+uploads/
+
+# Static files (optional if you’re collecting them on deploy)
+staticfiles/
+static/
+
+# Django migrations (optional: you might want to keep them in Git)
+*/migrations/*.pyc
+*/migrations/*.py
+*/migrations/__pycache__/
+
+# IDEs / editors
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# macOS
+.DS_Store
+
+# Node (if using frontend in same repo)
+node_modules/
