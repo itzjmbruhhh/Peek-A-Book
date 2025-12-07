@@ -8,6 +8,8 @@
   @apply relative rounded-2xl bg-(--color-primary) p-4 flex flex-row h-fit md:flex-col! md:items-center md:justify-center w-fit! xl:flex-col! xl:items-center xl:justify-center;
 }
 
+/* UPLOADS */
+
 .button {
   @apply p-1 rounded-2xl w-[50%] xl:py-1 xl:text-xl md:py-1 md:text-xl;
 }
@@ -30,4 +32,32 @@
 
 .button.cancel:hover {
   @apply bg-(--color-text-secondary);
+}
+
+/* RESULTS */
+.books-card-container {
+  @apply items-stretch;
+}
+
+/* Each card grows equally */
+.book-card {
+  @apply flex flex-col w-[50%];
+}
+
+.book-image {
+  @apply border w-full h-[170px] mb-1
+}
+
+/* Image stays fixed height — text flexes */
+.book-text {
+  @apply flex flex-col flex-1 justify-between;
+}
+
+/* Title wraps but doesn't push card taller */
+.book-title {
+  @apply font-semibold leading-tight;
+}
+
+.author {
+  @apply font-light text-sm
 }
