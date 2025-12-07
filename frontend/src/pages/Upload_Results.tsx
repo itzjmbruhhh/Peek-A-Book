@@ -1,7 +1,7 @@
 import "../styles/pages/Upload-Results.css";
 import Results from "./Results";
 import Upload from "./Upload";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 type Props = {
   uploadOpen: boolean;
@@ -14,20 +14,21 @@ function Upload_Results({ uploadOpen, setUploadOpen }: Props) {
     "upload"
   );
 
-  const original = document.body.style.overflow;
+  // capture the original body overflow once on mount
+  const original = useRef(document.body.style.overflow);
 
   // lock scroll when any modal is open
   useEffect(() => {
     if (currentModal !== null) {
       document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = original;
+      document.body.style.overflow = original.current;
     }
 
     return () => {
-      document.body.style.overflow = original;
+      document.body.style.overflow = original.current;
     };
-  }, [currentModal, original]);
+  }, [currentModal]);
 
   // When the internal modal state is set to null, notify the parent
   // so the parent can unmount this component (and clear its uploadOpen flag).
