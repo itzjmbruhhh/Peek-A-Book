@@ -24,6 +24,7 @@
 
 html.dark {
   --color-primary: #373737;
+  --color-secondary: #292929;
   --color-text-primary: #FFFFFF;
   --color-text-secondary: #8E8E8E;
   --color-opaque: #000000b6;
@@ -31,6 +32,7 @@ html.dark {
 
 html.light {
   --color-primary: #FFFFFF;
+  --color-secondary: #dfdfdf;
   --color-text-primary: #373737;
   --color-text-secondary: #737373;
   --color-opaque: #7373738f;

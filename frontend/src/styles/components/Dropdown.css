@@ -1,0 +1,13 @@
+@import "tailwindcss";
+
+.dropdown-container {
+    @apply absolute left-0 mt-2 w-full max-h-40 border rounded-md shadow-lg z-20 overflow-y-auto bg-(--color-secondary)
+}
+
+.dropdown-options {
+    @apply py-1 text-sm bg-(--color-secondary) max-h-25;
+}
+
+.dropdown-option {
+    @apply px-3 py-1 border-b;
+}

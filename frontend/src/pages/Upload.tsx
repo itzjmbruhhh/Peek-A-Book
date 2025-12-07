@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import "../styles/pages/Utils.css"
+import Dropdown from "../components/Dropdown";
 
 type OverlayProps = {
   uploadOpen: boolean;
@@ -44,11 +45,15 @@ function Upload({uploadOpen, setUploadOpen} : OverlayProps) {
 
             {/* Preset Group */}
             <div>
-
+                <h2 className="text-md font-semibold">Select Preset</h2>
+                <Dropdown />
             </div>
 
             {/* Button Group */}
-            <div></div>
+            <div className="flex gap-5 mt-15">
+                <button className="border w-[50%]">back</button>
+                <button className="border w-[50%]">proceed</button>
+            </div>
         </div>
     </div>
   )
