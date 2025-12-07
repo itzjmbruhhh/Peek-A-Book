@@ -1,0 +1,5 @@
+@import "tailwindcss";
+
+.overlay {
+    @apply fixed inset-0 w-full h-full bg-(--color-opaque) transition-all z-999 overflow-hidden flex flex-row p-10 backdrop-blur-lg
+}

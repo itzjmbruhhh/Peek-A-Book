@@ -1,6 +1,8 @@
-import Navbar from "../components/Navbar";
 import "../styles/pages/GetStarted.css";
+import Upload from "../pages/Upload"
+
 import { useState } from "react";
+
 import questions_1 from "../utils/question1.json";
 import questions_2 from "../utils/question2.json";
 import questions_3 from "../utils/question3.json";
@@ -11,6 +13,9 @@ function GetStarted() {
     id: string;
     option: string;
   }
+
+  // State to track if Proceed button is clicked
+  const [uploadOpen, setUploadOpen] = useState(false);
 
   // State to track selected checkboxes
   const [selected, setSelected] = useState<string[]>([]);
@@ -186,12 +191,17 @@ function GetStarted() {
         {/* Proceed Button Start */}
           <div className="flex flex-col items-center md:items-end xl:items-end gap-1 px-2 xl:mr-20">
             <label className="text-lg font-medium text-(--color-text-primary)">Ready to upload photo?</label>
-            <button className="getStarted mt-0! mx-2">
+            <button className="getStarted mt-0! mx-2" onClick={()=> setUploadOpen(true)}>
               Proceed
             </button>
           </div>
 
         {/* Proceed Button End */}
+
+        {/* Upload Overlay Start */}
+        {uploadOpen && (
+          <Upload uploadOpen={uploadOpen} setUploadOpen={setUploadOpen} ></Upload>
+        )}
 
       </div>
     </section>
