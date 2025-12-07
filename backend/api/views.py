@@ -34,3 +34,21 @@ class SavedBookListCreateView(APIView):
             serializer.save()
             return Response({"message" : "Book Saved", "book" : serializer.data})
         return Response(serializer.errors, status=400)
+    
+class UploadShelfView(APIView):
+    def post(self, request):
+        image_file = request.FILES.get('image')
+        if not image_file:
+            return Response({"error" : "No image provided"}, status=400)
+        # store locally or upload to S3
+        # pass image to OCR / Vision API
+        # EDIT THIS LATER TO HANDLE IT
+        return Response({"message" : "Image uploaded", "filename" : image_file.name})
+    
+class ScanResultView(APIView):
+    def post(self, request):
+        # process uploaded image (OCR / Vision)
+        # extract book titles
+        # EDIT THIS LATER TO HANDLE IT
+        titles = ["Book 1", "Book 2"] # Sample
+        return Response({"titles" : titles})
