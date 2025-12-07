@@ -1,5 +1,5 @@
 import "../styles/pages/GetStarted.css";
-import Upload from "../pages/Upload"
+import Upload from "./Upload"
 
 import { useState } from "react";
 

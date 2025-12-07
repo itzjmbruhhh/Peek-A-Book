@@ -1,19 +1,25 @@
-import { useEffect } from "react";
-import "../styles/pages/Upload.css";
+import { useEffect, useState } from "react";
+import "../styles/pages/Upload-Results.css";
 import Dropdown from "../components/Dropdown";
 
 import ImageUpload from "../components/ImageUpload";
+import Results from "./Results";
 
 type OverlayProps = {
   uploadOpen: boolean;
   setUploadOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
+
 function Upload({ uploadOpen, setUploadOpen }: OverlayProps) {
-  if (!uploadOpen) return null;
+  // Show results overlay useState
+  const [resultsOpen, setResultsOpen] = useState(false);
+
+  if (!uploadOpen && !resultsOpen) return null;
 
   const original = document.body.style.overflow;
 
+  // Show upload overlay logic
   useEffect(() => {
     if (uploadOpen) {
       document.body.style.overflow = "hidden";
@@ -25,6 +31,8 @@ function Upload({ uploadOpen, setUploadOpen }: OverlayProps) {
       document.body.style.overflow = original;
     };
   }, [uploadOpen]);
+
+
 
   return (
     <div className="overlay">
@@ -46,10 +54,26 @@ function Upload({ uploadOpen, setUploadOpen }: OverlayProps) {
         {/* Button Group */}
         <div className="flex gap-5 mt-15 w-full md:w-[90%] md:mb-2 xl:w-[91%] xl:mb-2">
           <button className="button cancel">Cancel</button>
-          <button className="button proceed">Proceed</button>
+          <button
+            onClick={() => {
+              setUploadOpen(false);
+              setResultsOpen(true);
+            }}
+            className="button proceed"
+          >
+            Proceed
+          </button>
         </div>
       </div>
       {/* Container End */}
+
+      {/* Reults container */}
+      {resultsOpen && (
+        <Results
+          resultsOpen={resultsOpen}
+          setResultsOpen={setResultsOpen}
+        ></Results>
+      )}
     </div>
   );
 }
