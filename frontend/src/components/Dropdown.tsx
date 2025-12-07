@@ -21,12 +21,12 @@ function Dropdown() {
   }, []);
 
   return (
-    <div className="relative" ref={dropdownRef}>
+    <div className="relative dropdown-box" ref={dropdownRef}>
       <button
         onClick={() => setDropdownOpen((prev) => !prev)}
-        className="mt-1 px-4 py-1 w-full border rounded-md text-sm text-left bg-(--color-secondary)"
+        className="mt-1 px-4 py-1 w-full border rounded-md text-sm text-left bg-(--color-secondary) flex justify-between"
       >
-        -- Preset --
+        -- Preset -- <i className="las la-caret-down my-auto"></i>
       </button>
 
       {dropdownOpen && (

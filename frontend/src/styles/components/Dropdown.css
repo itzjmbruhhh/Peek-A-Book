@@ -4,10 +4,18 @@
     @apply absolute left-0 mt-2 w-full max-h-40 border rounded-md shadow-lg z-20 overflow-y-auto bg-(--color-secondary)
 }
 
+.dropdown-box:hover {
+    @apply shadow-xl/20;
+}
+
 .dropdown-options {
-    @apply py-1 text-sm bg-(--color-secondary) max-h-25;
+    @apply py-1 text-sm bg-(--color-secondary) max-h-28;
 }
 
 .dropdown-option {
-    @apply px-3 py-1 border-b;
+    @apply px-5 py-1 border-b;
+}
+
+.dropdown-option:hover {
+    @apply bg-(--color-opaque);
 }

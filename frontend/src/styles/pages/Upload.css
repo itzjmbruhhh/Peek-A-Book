@@ -1,0 +1,29 @@
+@import "tailwindcss";
+
+.overlay {
+    @apply fixed inset-0 w-full h-full bg-(--color-opaque) transition-all z-999 overflow-hidden flex flex-row p-10 backdrop-blur-lg
+}
+
+.button {
+    @apply p-1 rounded-2xl w-[50%];
+}
+
+.button:hover {
+    @apply shadow-xl/25
+}
+
+.button.proceed {
+    @apply bg-(--color-red) text-(--color-text-primary);
+}
+
+.button.proceed:hover {
+    @apply bg-(--color-red-dark);
+}
+
+.button.cancel {
+    @apply bg-(--color-text-primary) text-(--color-primary);
+}
+
+.button.cancel:hover {
+    @apply bg-(--color-text-secondary);
+}
