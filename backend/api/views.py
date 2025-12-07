@@ -52,3 +52,15 @@ class ScanResultView(APIView):
         # EDIT THIS LATER TO HANDLE IT
         titles = ["Book 1", "Book 2"] # Sample
         return Response({"titles" : titles})
+    
+class RecommendationsView(APIView):
+    def post(self, request):
+        # Fetch device presets
+        presets = DevicePreset.objects.filter(device_id=request.device_id)
+        # Fetch saved books, detected books
+        # Apply basic or advanced recommendation logic
+        # EDIT THIS LATER
+        recommendations = [{
+            "title" : "Example Book", "author" : "Example Author", "cover_image" : ""
+        }]
+        return Response({"recommendations" : recommendations})
