@@ -1,5 +1,3 @@
-import React from "react";
-
 interface OverlayProps {
   isOpen: boolean;
   onClose: () => void;

@@ -1,16 +1,14 @@
-import { useState, useEffect } from "react"
-import "../styles/pages/Upload-Results.css"
-import { div } from "framer-motion/client";
+import "../styles/pages/Upload-Results.css";
 
 type OverlayProps = {
   resultsOpen: boolean;
   setResultsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-function Results({ resultsOpen, setResultsOpen } : OverlayProps) {
-  return (
-    <div>HI</div>
-  )
+function Results({ resultsOpen, setResultsOpen }: OverlayProps) {
+  if (!resultsOpen) return null;
+
+  return <div>HI</div>;
 }
 
-export default Results
+export default Results;

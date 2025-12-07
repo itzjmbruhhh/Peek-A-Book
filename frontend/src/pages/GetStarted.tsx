@@ -1,5 +1,5 @@
 import "../styles/pages/GetStarted.css";
-import Upload from "./Upload"
+import Upload_Results from "./Upload_Results"
 
 import { useState } from "react";
 
@@ -200,7 +200,7 @@ function GetStarted() {
 
         {/* Upload Overlay Start */}
         {uploadOpen && (
-          <Upload uploadOpen={uploadOpen} setUploadOpen={setUploadOpen} ></Upload>
+          <Upload_Results uploadOpen={uploadOpen} setUploadOpen={setUploadOpen} ></Upload_Results>
         )}
 
       </div>
