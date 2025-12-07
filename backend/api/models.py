@@ -12,3 +12,9 @@ class DevicePreset(models.Model):
     reading_interests = models.JSONField(default=list, blank=True)
     reading_experience =  models.JSONField(default=list, blank=True)
     avoid_types =  models.JSONField(default=list, blank=True)
+    
+class SavedBook(models.Model):
+    device_id = models.CharField(max_length=100)
+    title = models.CharField(max_length=255)
+    author = models.CharField(max_length=255, null=True, blank=True)
+    cover_image = models.URLField(null=True, blank=True)
