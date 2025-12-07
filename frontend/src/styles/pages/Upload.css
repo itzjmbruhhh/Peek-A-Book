@@ -1,29 +1,33 @@
 @import "tailwindcss";
 
 .overlay {
-    @apply fixed inset-0 w-full h-full bg-(--color-opaque) transition-all z-999 overflow-hidden flex flex-row p-10 backdrop-blur-lg
+  @apply fixed inset-0 w-full h-full bg-(--color-opaque) transition-all z-999 overflow-hidden flex flex-row p-10 backdrop-blur-lg justify-center items-center;
+}
+
+.container {
+  @apply relative rounded-2xl bg-(--color-primary) p-4 flex flex-row h-fit md:flex-col! md:items-center md:justify-center w-fit! xl:flex-col! xl:items-center xl:justify-center;
 }
 
 .button {
-    @apply p-1 rounded-2xl w-[50%];
+  @apply p-1 rounded-2xl w-[50%] xl:py-1 xl:text-xl md:py-1 md:text-xl;
 }
 
 .button:hover {
-    @apply shadow-xl/25
+  @apply shadow-xl/25;
 }
 
 .button.proceed {
-    @apply bg-(--color-red) text-(--color-text-primary);
+  @apply bg-(--color-red) text-(--color-text-primary);
 }
 
 .button.proceed:hover {
-    @apply bg-(--color-red-dark);
+  @apply bg-(--color-red-dark);
 }
 
 .button.cancel {
-    @apply bg-(--color-text-primary) text-(--color-primary);
+  @apply bg-(--color-text-primary) text-(--color-primary);
 }
 
 .button.cancel:hover {
-    @apply bg-(--color-text-secondary);
+  @apply bg-(--color-text-secondary);
 }

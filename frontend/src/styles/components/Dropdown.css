@@ -9,7 +9,7 @@
 }
 
 .dropdown-options {
-    @apply py-1 text-sm bg-(--color-secondary) max-h-28;
+    @apply py-1 text-sm bg-(--color-secondary) max-h-28 ;
 }
 
 .dropdown-option {
@@ -17,5 +17,5 @@
 }
 
 .dropdown-option:hover {
-    @apply bg-(--color-opaque);
+    @apply bg-(--color-opaque) cursor-pointer;
 }

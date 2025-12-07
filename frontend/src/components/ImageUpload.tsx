@@ -27,7 +27,7 @@ function ImageUpload() {
 
   return (
     <div className="image-group rounded-md p-4 w-full max-w-sm">
-      <h1 className="text-xl font-semibold my-2">Upload your photo</h1>
+      <h1 className="text-xl font-semibold my-2 md:text-2xl xl:text-2xl">Upload your photo</h1>
 
       <div
         className={`w-full border-3 border-dashed rounded-md flex items-center justify-center cursor-pointer overflow-hidden ${
@@ -54,7 +54,7 @@ function ImageUpload() {
           <button
             type="button"
             onClick={removeImage}
-            className="text-red-500 hover:text-red-700"
+            className="text-red-500 hover:text-red-700 cursor-pointer"
           >
             <i className="las la-trash"></i>
           </button>

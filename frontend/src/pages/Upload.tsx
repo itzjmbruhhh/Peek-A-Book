@@ -28,35 +28,28 @@ function Upload({ uploadOpen, setUploadOpen }: OverlayProps) {
 
   return (
     <div className="overlay">
-      {/* Container */}
-      <div className="container relative rounded-2xl bg-(--color-primary) p-4 flex flex-row h-fit">
+      {/* Container Start */}
+      <div className="container">
         <button onClick={() => setUploadOpen(false)}>
           <i className="las la-times absolute top-3 right-3 text-3xl"></i>
         </button>
 
         {/* Image Group */}
         <ImageUpload></ImageUpload>
-        {/* <div className="image-group">
-                <h1 className="text-xl font-semibold my-2">Upload your photo</h1>
-                <img src="" alt="image" className="w-full h-[253px] border"/>
-                <div className="image-group-labels flex justify-between">
-                    <label htmlFor="" className="">File.png</label>
-                    <button><i className="las la-trash m-auto"></i></button>
-                </div>
-            </div> */}
 
         {/* Preset Group */}
-        <div>
+        <div className="md:w-full md:px-4 xl:w-full xl:px-4">
           <h2 className="text-md font-semibold">Select Preset</h2>
           <Dropdown />
         </div>
 
         {/* Button Group */}
-        <div className="flex gap-5 mt-15">
+        <div className="flex gap-5 mt-15 w-full md:w-[90%] md:mb-2 xl:w-[91%] xl:mb-2">
           <button className="button cancel">Cancel</button>
           <button className="button proceed">Proceed</button>
         </div>
       </div>
+      {/* Container End */}
     </div>
   );
 }
