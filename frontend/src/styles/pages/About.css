@@ -4,6 +4,10 @@
   @apply w-full pt-5 md:pt-10 xl:pt-10 flex flex-col md:flex-row xl:flex-row gap-5 justify-center;
 }
 
+.container-about {
+  @apply w-full pt-5 md:pt-10 xl:pt-10 flex flex-row md:flex-row xl:flex-row gap-5 justify-center;
+}
+
 .about-card {
   @apply rounded-2xl p-3 pb-8 shadow-[-25px_0_25px_rgba(0,0,0,0.08),-5px_15px_20px_rgba(0,0,0,0.18)];
 }

@@ -15,7 +15,7 @@ const imageSrc = new URL(`../assets/images/${aboutMeData.directory}`, import.met
           {/* Title End */}
 
           {/* About Container Start */}
-          <div className="container flex-row!">
+          <div className="container-about flex-col! xl:flex-row! md:flex-row!">
 
               {/* About Card Left Start */}
               <div className="about-card xl:w-[70%] p-10!">
