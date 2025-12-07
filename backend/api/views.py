@@ -20,7 +20,7 @@ class PresetListCreateView(APIView):
         return Response(serializer.errors, status=400)
 
 # Saved Books
-class SavedBookCreateView(APIView):
+class SavedBookListCreateView(APIView):
     def get(self, request):
         books = SavedBook.objects.filter(device_id=request.device_id)
         serializer = SavedBookSerializer(books, many=True)
