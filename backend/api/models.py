@@ -13,8 +13,14 @@ class DevicePreset(models.Model):
     reading_experience =  models.JSONField(default=list, blank=True)
     avoid_types =  models.JSONField(default=list, blank=True)
     
+    def __str__(self):
+        return f"{self.device_id} - {self.name or 'Unamed Preset'}"
+    
 class SavedBook(models.Model):
     device_id = models.CharField(max_length=100)
     title = models.CharField(max_length=255)
     author = models.CharField(max_length=255, null=True, blank=True)
     cover_image = models.URLField(null=True, blank=True)
+    
+    def __str__(self):
+        return f"{self.title} ({self.device_id})"
