@@ -5,7 +5,7 @@
 }
 
 .container {
-  @apply relative rounded-2xl bg-(--color-primary) p-4 flex flex-row h-fit md:flex-col! md:items-center md:justify-center w-fit! xl:flex-col! xl:items-center xl:justify-center;
+  @apply relative rounded-2xl bg-(--color-primary) p-4 flex flex-row h-fit md:flex-col! md:items-center md:justify-center md:w-[90%] md:max-w-[700px] md:h-auto w-fit! xl:flex-col! xl:items-center xl:justify-center;
 }
 
 /* UPLOADS */
@@ -41,23 +41,22 @@
 
 /* Each card grows equally */
 .book-card {
-  @apply flex flex-col w-[50%];
+  @apply flex flex-col w-[50%] md:w-1/4 xl:w-1/4;
 }
 
 .book-image {
-  @apply border w-full h-[170px] mb-1
+  @apply border h-auto w-[60%] object-contain mb-1 mx-auto;
 }
 
-/* Image stays fixed height — text flexes */
+/* Center title and author, remove extra spacing */
 .book-text {
-  @apply flex flex-col flex-1 justify-between;
+  @apply flex flex-col items-center justify-start gap-0;
 }
 
-/* Title wraps but doesn't push card taller */
 .book-title {
-  @apply font-semibold leading-tight;
+  @apply font-semibold leading-tight text-center mb-0;
 }
 
 .author {
-  @apply font-light text-sm
+  @apply font-light text-sm text-center mt-0;
 }
