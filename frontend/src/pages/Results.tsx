@@ -1,5 +1,5 @@
 import "../styles/pages/Upload-Results.css";
-import { useState, useEffect } from "react";
+import { useMemo } from "react";
 
 type ResultsProps = {
   onClose: () => void;
@@ -7,8 +7,17 @@ type ResultsProps = {
 };
 
 function Results({ onClose, books }: ResultsProps) {
+  const uniqueBooks = useMemo(() => {
+    const seen = new Set<string>();
+    return (books || []).filter((book) => {
+      const title = (book?.title || "").toString().trim().toLowerCase();
+      if (seen.has(title)) return false;
+      seen.add(title);
+      return true;
+    });
+  }, [books]);
   return (
-    <div className="container relative p-5! xl:p-10! md:-10! min-w-[350px] max-w-[350px] md:min-w-[fit] md:max-w-[45%] xl:min-w-[fit] xl:max-w-[45%]">
+    <div className="container relative p-5 xl:p-10 min-w-[350px] max-w-[350px] md:min-w-[fit] md:max-w-[45%] xl:min-w-[fit] xl:max-w-[45%]">
       <button onClick={onClose} className="absolute top-3 right-3">
         <i className="las la-times text-3xl cursor-pointer"></i>
       </button>
@@ -16,12 +25,12 @@ function Results({ onClose, books }: ResultsProps) {
         Top picks from your photo
       </h1>
 
-      <div className="overflow-x-auto flex gap-4 snap-x snap-mandatory">
-        {books.length > 0 ? (
-          books.map((book, idx) => (
+      <div className="overflow-x-auto flex gap-4 snap-x snap-mandatory justify-center px-15 py-5">
+        {uniqueBooks.length > 0 ? (
+          uniqueBooks.map((book, idx) => (
             <div
               key={idx}
-              className="book-card flex-none w-1/2 sm:w-1/2 md:w-1/4 xl:w-1/4 snap-start"
+              className="book-card flex-none w-1/2! max-h-[300px]! sm:w-1/2 md:w-1/4 xl:w-1/4 snap-start"
             >
               <img src={book.image} alt={book.title} className="book-image" />
               <div className="book-text">

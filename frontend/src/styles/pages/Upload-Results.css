@@ -45,7 +45,7 @@
 }
 
 .book-image {
-  @apply border h-auto w-[60%] object-contain mb-1 mx-auto;
+  @apply h-auto my-auto w-60! min-h-[150px]! object-contain mb-1 mx-auto;
 }
 
 /* Center title and author, remove extra spacing */
