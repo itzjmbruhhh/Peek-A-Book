@@ -93,21 +93,27 @@ class UploadShelfView(APIView):
                 - Avoid types: {preferences.get('avoid_types', [])}
 
                 Task: Recommend 5–10 books the user is likely to enjoy. 
-                Return a JSON array of objects with the following fields:
+                For each book, include the following fields in a JSON array:
                 - "title" (string)
                 - "author" (string)
                 - "description" (short description)
                 - "reason_it_fits" (why this book matches the user's preferences)
+                - "image" (URL of the book cover)
 
-                The output must be valid JSON only.
+                Instructions for "image":
+                - Try to find the cover image from Google Books metadata or Open Library API.
+                - If you cannot find a real cover, use a placeholder URL like "https://placehold.co/97x150".
+
+                Return **valid JSON only**, do not include any text outside the JSON.
                 """
+
 
             # ---------------------------
             # Step 3: Call Cohere chat
             # ---------------------------
             try:
                 llm_response = co.chat(
-                    model="command-xlarge-nightly",  # supported model
+                    model="command-a-reasoning-08-2025",  # supported model
                     message=prompt
                 )
 
