@@ -1,3 +1,9 @@
+/**
+ * Component: PageTransition
+ * Purpose: Small wrapper around `framer-motion` to provide
+ * a consistent fade/enter/exit animation between route changes.
+ * Wrap page content with this component to enable the transition.
+ */
 import { motion } from "framer-motion";
 import type { ReactNode } from "react";
 

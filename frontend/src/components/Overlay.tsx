@@ -1,3 +1,8 @@
+/**
+ * Component: Overlay
+ * Purpose: A simple backdrop used for modals and mobile menus.
+ * Accepts `isOpen` to toggle visibility and `onClose` to handle clicks.
+ */
 interface OverlayProps {
   isOpen: boolean;
   onClose: () => void;

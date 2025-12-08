@@ -1,3 +1,9 @@
+/**
+ * Hook: useTheme
+ * Purpose: Manage light/dark theme preference. Persists selection
+ * to localStorage and keeps a `light`/`dark` class on the document
+ * root for CSS theming.
+ */
 import { useEffect, useState } from "react";
 
 export function useTheme() {
@@ -17,7 +23,7 @@ export function useTheme() {
   }, [theme]);
 
   const toggle = () => {
-    setTheme(t => (t === "light" ? "dark" : "light"));
+    setTheme((t) => (t === "light" ? "dark" : "light"));
   };
 
   return { theme, toggle };

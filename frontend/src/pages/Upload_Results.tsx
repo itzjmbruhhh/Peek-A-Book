@@ -1,3 +1,9 @@
+/**
+ * Page/Component: Upload_Results
+ * Purpose: Overlay orchestrator that manages the upload -> results
+ * flow. Locks background scroll while open and mounts either the
+ * `Upload` component or the `Results` component based on internal state.
+ */
 import "../styles/pages/Upload-Results.css";
 import Results from "./Results";
 import Upload from "./Upload";

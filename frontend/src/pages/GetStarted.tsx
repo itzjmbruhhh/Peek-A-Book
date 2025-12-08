@@ -1,3 +1,9 @@
+/**
+ * Page: GetStarted
+ * Purpose: Onboarding page where users select reading preferences.
+ * - Manages preference state, presets (load/save) and device id.
+ * - When the user proceeds, the upload overlay is opened to add a photo.
+ */
 import "../styles/pages/GetStarted.css";
 import Upload_Results from "./Upload_Results";
 import { useState, useEffect } from "react";

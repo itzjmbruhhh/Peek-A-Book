@@ -1,3 +1,9 @@
+/**
+ * Hook: useScrollSpy
+ * Purpose: Given an array of element IDs, returns the currently active
+ * section ID based on scroll position. Useful for highlighting
+ * navigation items while the user scrolls through sections.
+ */
 import { useEffect, useState } from "react";
 
 type Options = {

@@ -1,8 +1,11 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework import status, parsers
 from .models import DevicePreset, SavedBook
 from .serializers import DevicePresetSerializer, SavedBookSerializer
+import tempfile
+
 # Presets
 class PresetListCreateView(APIView):
     def get(self, request):

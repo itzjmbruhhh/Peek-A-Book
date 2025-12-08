@@ -1,3 +1,10 @@
+/**
+ * Component: ImageUpload
+ * Purpose: Provides an image selection UI with click-to-select,
+ * drag-and-drop support, preview and removal. Returns a local
+ * preview via `URL.createObjectURL` for quick client-side preview.
+ * Used inside the upload modal.
+ */
 import { useState, useRef } from "react";
 
 function ImageUpload() {
@@ -27,7 +34,9 @@ function ImageUpload() {
 
   return (
     <div className="image-group rounded-md p-4 w-full max-w-sm">
-      <h1 className="text-xl font-semibold my-2 md:text-2xl xl:text-2xl">Upload your photo</h1>
+      <h1 className="text-xl font-semibold my-2 md:text-2xl xl:text-2xl">
+        Upload your photo
+      </h1>
 
       <div
         className={`w-full border-3 border-dashed rounded-md flex items-center justify-center cursor-pointer overflow-hidden ${

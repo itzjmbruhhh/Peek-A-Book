@@ -1,3 +1,9 @@
+/**
+ * Component: Footer
+ * Purpose: Renders the site's footer with copyright information
+ * and external links (LinkedIn, GitHub, portfolio).
+ * This is a presentational component used across layouts.
+ */
 import "../styles/components/Footer.css";
 
 function Footer() {
@@ -14,7 +20,10 @@ function Footer() {
           <a href="https://www.github.com/itzjmbruhhh" target="_blank">
             <i className="lab la-github text-xl xl:text-2xl"></i>
           </a>
-          <a href="https://itzjmbruhhh.github.io/itzjmbruhhh-portfolio" target="_blank">
+          <a
+            href="https://itzjmbruhhh.github.io/itzjmbruhhh-portfolio"
+            target="_blank"
+          >
             <i className="las la-briefcase text-xl xl:text-2xl"></i>
           </a>
         </div>

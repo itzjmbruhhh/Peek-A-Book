@@ -1,6 +1,15 @@
+/**
+ * Component: CardCarousel
+ * Purpose: Horizontally scrollable carousel for showing book cards.
+ * Provides left/right controls and a scrollable container.
+ */
 import { useRef } from "react";
 
-function CardCarousel({ cards }: { cards: { title: string; author: string; image: string }[] }) {
+function CardCarousel({
+  cards,
+}: {
+  cards: { title: string; author: string; image: string }[];
+}) {
   const carouselRef = useRef<HTMLDivElement>(null);
 
   const scrollLeft = () => {

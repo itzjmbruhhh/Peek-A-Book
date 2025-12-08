@@ -1,3 +1,9 @@
+/**
+ * Component: Navbar
+ * Purpose: Main site navigation. Handles theme toggle (via `useTheme`),
+ * responsive mobile menu (with Overlay), and tracks the active route
+ * to highlight the current link.
+ */
 import { useTheme } from "../hooks/useTheme";
 import Overlay from "./Overlay";
 import { useEffect, useState } from "react";
@@ -148,15 +154,13 @@ function Navbar() {
           >
             About
           </Link>
-          <footer className='absolute inset-x-5 bottom-0 text-center align-middle py-3'>
-        <div className="flex flex-row justify-center">
-            <p className="text-[10px]">
-              © {new Date().getFullYear()} JM Reyes. All rights reserved.
-            </p>
-            
-        </div>
-        
-    </footer>
+          <footer className="absolute inset-x-5 bottom-0 text-center align-middle py-3">
+            <div className="flex flex-row justify-center">
+              <p className="text-[10px]">
+                © {new Date().getFullYear()} JM Reyes. All rights reserved.
+              </p>
+            </div>
+          </footer>
         </nav>
         {/* Mobile Menu End */}
       </div>

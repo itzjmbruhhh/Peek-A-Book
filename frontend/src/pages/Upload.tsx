@@ -1,3 +1,8 @@
+/**
+ * Page/Component: Upload
+ * Purpose: Modal content for uploading an image. Renders the
+ * `ImageUpload` component and provides Cancel/Proceed actions.
+ */
 import React from "react";
 import "../styles/pages/Upload-Results.css";
 import ImageUpload from "../components/ImageUpload";
