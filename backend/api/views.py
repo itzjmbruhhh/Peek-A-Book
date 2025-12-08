@@ -4,13 +4,12 @@ from rest_framework.response import Response
 from rest_framework import parsers
 from .models import DevicePreset
 from .serializers import DevicePresetSerializer
-import json, requests, numpy as np
+import json, numpy as np
 from django.conf import settings
-import base64, traceback
+import traceback
 import cohere
 import easyocr
-from PIL import Image
-from io import BytesIO
+from .throttles import ShelfScanThrottle
 
 # Initialize Cohere client
 co = cohere.Client(settings.COHERE_API_KEY)
@@ -50,16 +49,11 @@ class PresetDetailView(APIView):
 
 
 # -------------------------
-# Saved Books API
-# -------------------------
-
-
-
-# -------------------------
 # Upload Shelf API
 # -------------------------
 class UploadShelfView(APIView):
     parser_classes = [parsers.MultiPartParser]
+    throttle_classes = [ShelfScanThrottle]
 
     def post(self, request):
         try:
@@ -74,65 +68,71 @@ class UploadShelfView(APIView):
             except Exception:
                 preferences = {}
 
-            # Detect text from image using EasyOCR
+            # ---------------------------
+            # Step 1: OCR title detection
+            # ---------------------------
             image_bytes = image_file.read()
             results = ocr_reader.readtext(image_bytes, detail=0)
             detected_titles = [line.strip() for line in results if line.strip()]
 
-            # Step 1: Create preference embedding
-            pref_text = " ".join(
-                preferences.get("favorite_genres", []) +
-                preferences.get("reading_intent", []) +
-                preferences.get("reading_preferences", []) +
-                preferences.get("avoid_types", [])
-            )
+            if not detected_titles:
+                return Response({"error": "No text detected from image"}, status=400)
 
+            # ---------------------------
+            # Step 2: Build structured prompt for Cohere
+            # ---------------------------
+            prompt = f"""
+                You are a book recommendation assistant.
+
+                Detected books: {detected_titles}
+
+                User preferences:
+                - Favorite genres: {preferences.get('favorite_genres', [])}
+                - Reading intent: {preferences.get('reading_intent', [])}
+                - Reading preferences: {preferences.get('reading_preferences', [])}
+                - Avoid types: {preferences.get('avoid_types', [])}
+
+                Task: Recommend 5–10 books the user is likely to enjoy. 
+                Return a JSON array of objects with the following fields:
+                - "title" (string)
+                - "author" (string)
+                - "description" (short description)
+                - "reason_it_fits" (why this book matches the user's preferences)
+
+                The output must be valid JSON only.
+                """
+
+            # ---------------------------
+            # Step 3: Call Cohere chat
+            # ---------------------------
             try:
-                pref_embedding = co.embed(model="embed-english-v2.0", texts=[pref_text]).embeddings[0]
+                llm_response = co.chat(
+                    model="command-xlarge-nightly",  # supported model
+                    message=prompt
+                )
+
+                raw_output = getattr(llm_response, "text", None)
+
+                if not raw_output:
+                    raise ValueError("LLM returned no text field")
+
             except Exception as e:
-                print("Cohere embedding failed:", e)
-                pref_embedding = None
+                print("LLM error:", e)
+                return Response({"error": "Failed to generate recommendations from LLM"}, status=500)
 
-            recommendations = []
 
-            # Step 2: Fetch book metadata and compute similarity
-            for title in detected_titles:
-                google_resp = requests.get(
-                    "https://www.googleapis.com/books/v1/volumes",
-                    params={"q": f"intitle:{title}", "maxResults": 1}
-                ).json()
+            # ---------------------------
+            # Step 4: Parse JSON output
+            # ---------------------------
+            try:
+                recommendations = json.loads(raw_output)
+                if not isinstance(recommendations, list):
+                    recommendations = []
+            except Exception:
+                recommendations = raw_output  # fallback to raw text if JSON fails
 
-                if "items" not in google_resp:
-                    continue
-
-                info = google_resp["items"][0]["volumeInfo"]
-                book_text = f"{info.get('title', '')} {' '.join(info.get('authors', []))} {' '.join(info.get('categories', []))}"
-
-                # Compute similarity score
-                if pref_embedding:
-                    try:
-                        book_embedding = co.embed(model="embed-english-v2.0", texts=[book_text]).embeddings[0]
-                        sim = np.dot(pref_embedding, book_embedding) / (np.linalg.norm(pref_embedding) * np.linalg.norm(book_embedding))
-                    except:
-                        sim = 0
-                else:
-                    sim = 0
-
-                recommendations.append({
-                    "title": info.get("title", title),
-                    "author": ", ".join(info.get("authors", ["Unknown"])),
-                    "image": info.get("imageLinks", {}).get("thumbnail", "https://placehold.co/97x150"),
-                    "score": sim
-                })
-
-            recommendations = sorted(recommendations, key=lambda x: x["score"], reverse=True)
-            return Response({"books": recommendations[:10]})
+            return Response({"books": recommendations})
 
         except Exception as e:
             traceback.print_exc()
             return Response({"error": str(e)}, status=500)
-
-
-# -------------------------
-# Scan Result API
-# -------------------------

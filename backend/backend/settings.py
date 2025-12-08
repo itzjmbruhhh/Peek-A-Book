@@ -103,6 +103,17 @@ TEMPLATES = [
     },
 ]
 
+REST_FRAMEWORK = {
+    "DEFAULT_THROTTLE_CLASSES": [
+        "rest_framework.throttling.UserRateThrottle",
+        "rest_framework.throttling.AnonRateThrottle",
+    ],
+    "DEFAULT_THROTTLE_RATES": {
+        "user": "10/minute",
+        "anon": "10/minute",
+    }
+}
+
 WSGI_APPLICATION = 'backend.wsgi.application'
 
 
