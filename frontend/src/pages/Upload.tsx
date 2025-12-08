@@ -20,13 +20,13 @@ function Upload({
   const handleFileChange = (selected: File) => setFile(selected);
 
   const handleUpload = async () => {
-    if (!file) return;
+  if (!file) return;
 
-    const formData = new FormData();
-    formData.append("image", file);
-    formData.append("preferences", JSON.stringify(answers));
+  const formData = new FormData();
+  formData.append("image", file);
+  formData.append("preferences", JSON.stringify(answers));
 
-    // Send deviceId as header
+  try {
     const res = await fetch("http://localhost:8000/api/upload-shelf/", {
       method: "POST",
       headers: {
@@ -35,16 +35,20 @@ function Upload({
       body: formData,
     });
 
+    const data = await res.json();
+
     if (!res.ok) {
-      console.error("Upload failed", await res.text());
+      console.error("Upload failed:", data.error || data);
       return;
     }
 
-    const data = await res.json();
     console.log("Detected books:", data.books);
     setRecommendedBooks(data.books || []);
     onProceed();
-  };
+  } catch (err) {
+    console.error("Network or parsing error:", err);
+  }
+};
 
   return (
     <div className="container">

@@ -1,28 +1,36 @@
 import "../styles/pages/Upload-Results.css";
 import Results from "./Results";
 import Upload from "./Upload";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 
 type Props = {
   uploadOpen: boolean;
   setUploadOpen: React.Dispatch<React.SetStateAction<boolean>>;
   answers: any;
-  setRecommendedBooks: (books: any[]) => void;
+  setRecommendedBooks: React.Dispatch<React.SetStateAction<any[]>>; // add this
 };
 
 function Upload_Results({ uploadOpen, setUploadOpen, answers, setRecommendedBooks }: Props) {
   const [currentModal, setCurrentModal] = useState<"upload" | "results" | null>("upload");
-  const original = useRef(document.body.style.overflow);
+  const [recommendedBooks, setBooks] = useState<any[]>([]);
 
   useEffect(() => {
-    if (currentModal !== null) document.body.style.overflow = "hidden";
-    else document.body.style.overflow = original.current;
-    return () => { document.body.style.overflow = original.current; };
+    const originalOverflow = document.body.style.overflow;
+    if (currentModal) document.body.style.overflow = "hidden";
+    else document.body.style.overflow = originalOverflow;
+    return () => {
+      document.body.style.overflow = originalOverflow;
+    };
   }, [currentModal]);
 
   useEffect(() => {
-    if (currentModal === null) setUploadOpen(false);
+    if (!currentModal) setUploadOpen(false);
   }, [currentModal, setUploadOpen]);
+
+  // Whenever recommendedBooks updates locally, also update parent state
+  useEffect(() => {
+    setRecommendedBooks(recommendedBooks);
+  }, [recommendedBooks, setRecommendedBooks]);
 
   if (!uploadOpen) return null;
 
@@ -33,11 +41,15 @@ function Upload_Results({ uploadOpen, setUploadOpen, answers, setRecommendedBook
           onClose={() => setCurrentModal(null)}
           onProceed={() => setCurrentModal("results")}
           answers={answers}
-          setRecommendedBooks={setRecommendedBooks}
+          setRecommendedBooks={setBooks} // pass setter here
         />
       )}
+
       {currentModal === "results" && (
-        <Results onClose={() => setCurrentModal(null)} />
+        <Results
+          onClose={() => setCurrentModal(null)}
+          books={recommendedBooks} // pass local state
+        />
       )}
     </div>
   );

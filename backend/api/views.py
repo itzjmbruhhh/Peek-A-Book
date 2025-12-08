@@ -4,10 +4,16 @@ from rest_framework.response import Response
 from rest_framework import parsers
 from .models import DevicePreset, SavedBook
 from .serializers import DevicePresetSerializer, SavedBookSerializer
-import tempfile, openai, json, requests
-import numpy as np
+import tempfile, json, requests, numpy as np
 from django.conf import settings
 import base64
+import cohere
+import pytesseract
+from PIL import Image
+import traceback
+
+# Initialize Cohere client
+co = cohere.Client(settings.COHERE_API_KEY)  # add COHERE_API_KEY to settings
 
 # Presets
 class PresetListCreateView(APIView):
@@ -22,7 +28,7 @@ class PresetListCreateView(APIView):
         serializer = DevicePresetSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
-            return Response({"message" : "Preset Saved", "preset" : serializer.data})
+            return Response({"message": "Preset Saved", "preset": serializer.data})
         return Response(serializer.errors, status=400)
 
 # Saved Books
@@ -38,157 +44,126 @@ class SavedBookListCreateView(APIView):
         serializer = SavedBookSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
-            return Response({"message" : "Book Saved", "book" : serializer.data})
+            return Response({"message": "Book Saved", "book": serializer.data})
         return Response(serializer.errors, status=400)
-    
-openai.api_key = settings.OPENAI_API_KEY
+
+
+# Initialize Cohere client
+co = cohere.Client(settings.COHERE_API_KEY)
 
 class UploadShelfView(APIView):
     parser_classes = [parsers.MultiPartParser]
 
     def post(self, request):
-        """
-        Expects multipart form-data:
-        - image: uploaded bookshelf image
-        - preferences: JSON string containing user preferences
-        """
-        image_file = request.FILES.get("image")
-        prefs_json = request.data.get("preferences")
-
-        if not image_file or not prefs_json:
-            return Response({"error": "Missing image or preferences"}, status=400)
-
         try:
-            preferences = json.loads(prefs_json)
-        except Exception:
-            preferences = {}
+            image_file = request.FILES.get("image")
+            prefs_json = request.data.get("preferences")
 
-        # Encode image as base64
-        image_bytes = image_file.read()
-        encoded_image = base64.b64encode(image_bytes).decode()
+            if not image_file or not prefs_json:
+                return Response({"error": "Missing image or preferences"}, status=400)
 
-        # Step 1: Detect books using GPT-4o-mini (multimodal)
-        try:
-            response = openai.chat.completions.create(
-                model="gpt-4o-mini",
-                messages=[
-                    {
-                        "role": "user",
-                        "content": (
-                            "Analyze this bookshelf image and return a JSON array of all books "
-                            "with 'title' and 'author'. Example: "
-                            '[{"title": "Book Title", "author": "Author"}]'
-                        )
-                    },
-                    {
-                        "role": "user",
-                        "name": "bookshelf.jpg",
-                        "content": encoded_image
-                    }
-                ]
+            try:
+                preferences = json.loads(prefs_json)
+            except Exception:
+                preferences = {}
+
+            # Encode image as base64
+            image_bytes = image_file.read()
+            encoded_image = base64.b64encode(image_bytes).decode()
+
+            # Step 1: Detect books (stubbed example)
+            # Replace this with your actual image-to-book model or API
+            detected_books = [
+                {"title": "Sample Book", "author": "Sample Author"}
+            ]
+
+            if not detected_books:
+                return Response({"books": []})
+
+            # Step 2: Prepare preference text
+            pref_text = " ".join(
+                preferences.get("favorite_genres", []) +
+                preferences.get("reading_intent", []) +
+                preferences.get("reading_preferences", []) +
+                preferences.get("avoid_types", [])
             )
-            detected_books = json.loads(response.choices[0].message["content"])
-        except Exception as e:
-            return Response({"error": f"OpenAI request failed: {str(e)}"}, status=500)
 
-        if not detected_books:
-            return Response({"books": []})
+            # Step 3: Generate preference embedding using Cohere
+            try:
+                emb_resp = co.embed(model="embed-english-v2.0", texts=[pref_text])
+                pref_embedding = emb_resp.embeddings[0]
+            except Exception as e:
+                print("Cohere embedding failed:", e)
+                pref_embedding = None
 
-        # Step 2: Create preference embedding
-        pref_text = " ".join(
-            preferences.get("favorite_genres", []) +
-            preferences.get("reading_intent", []) +
-            preferences.get("reading_preferences", []) +
-            preferences.get("avoid_types", [])
-        )
-        try:
-            pref_embedding = openai.embeddings.create(
-                input=pref_text,
-                model="text-embedding-3-large"
-            )["data"][0]["embedding"]
-        except Exception:
-            pref_embedding = None
+            recommendations = []
 
-        # Step 3: Fetch metadata for each book and compute similarity
-        recommendations = []
-        for book in detected_books:
-            title = book.get("title")
-            author = book.get("author")
-            if not title:
-                continue
+            # Step 4: Fetch metadata and compute similarity
+            for book in detected_books:
+                title = book.get("title")
+                author = book.get("author") or ""
 
-            # Google Books API
-            google_resp = requests.get(
-                "https://www.googleapis.com/books/v1/volumes",
-                params={"q": f"intitle:{title}+inauthor:{author}", "maxResults": 1}
-            ).json()
+                if not title:
+                    continue
 
-            if "items" not in google_resp:
-                continue
+                google_resp = requests.get(
+                    "https://www.googleapis.com/books/v1/volumes",
+                    params={"q": f"intitle:{title}+inauthor:{author}", "maxResults": 1}
+                ).json()
 
-            info = google_resp["items"][0]["volumeInfo"]
-            book_text = f"{info.get('title', '')} {' '.join(info.get('authors', []))} {' '.join(info.get('categories', []))}"
+                if "items" not in google_resp:
+                    continue
 
-            # Similarity score (cosine)
-            if pref_embedding:
-                try:
-                    book_embedding = openai.embeddings.create(
-                        input=book_text,
-                        model="text-embedding-3-large"
-                    )["data"][0]["embedding"]
+                info = google_resp["items"][0]["volumeInfo"]
+                book_text = f"{info.get('title', '')} {' '.join(info.get('authors', []))} {' '.join(info.get('categories', []))}"
 
-                    sim = np.dot(pref_embedding, book_embedding) / (
-                        np.linalg.norm(pref_embedding) * np.linalg.norm(book_embedding)
-                    )
-                except Exception:
+                # Compute similarity using Cohere embeddings
+                if pref_embedding:
+                    try:
+                        book_emb_resp = co.embed(model="embed-english-v2.0", texts=[book_text])
+                        book_embedding = book_emb_resp.embeddings[0]
+                        sim = np.dot(pref_embedding, book_embedding) / (
+                            np.linalg.norm(pref_embedding) * np.linalg.norm(book_embedding)
+                        )
+                    except Exception:
+                        sim = 0
+                else:
                     sim = 0
-            else:
-                sim = 0
 
-            recommendations.append({
-                "title": info.get("title", title),
-                "author": ", ".join(info.get("authors", [author])),
-                "image": info.get("imageLinks", {}).get("thumbnail", "https://placehold.co/97x150"),
-                "score": sim
-            })
+                recommendations.append({
+                    "title": info.get("title", title),
+                    "author": ", ".join(info.get("authors", [author])),
+                    "image": info.get("imageLinks", {}).get("thumbnail", "https://placehold.co/97x150"),
+                    "score": sim
+                })
 
-        # Step 4: Sort by similarity score descending
-        recommendations = sorted(recommendations, key=lambda x: x["score"], reverse=True)
+            # Sort and return top 10
+            recommendations = sorted(recommendations, key=lambda x: x["score"], reverse=True)
+            return Response({"books": recommendations[:10]})
 
-        # Step 5: Return top 10
-        return Response({"books": recommendations[:10]})
+        except Exception as e:
+            traceback.print_exc()
+            return Response({"error": str(e)}, status=500)
 
-
+# Simple scan result view using OCR
 class ScanResultView(APIView):
     def post(self, request):
-        # process uploaded image (OCR / Vision)
-        # extract book titles
-        # EDIT THIS LATER TO HANDLE IT
-        titles = ["Book 1", "Book 2"] # Sample
-        return Response({"titles" : titles})
-    
+        image_file = request.FILES.get("image")
+        if not image_file:
+            return Response({"error": "No image provided"}, status=400)
+
+        image = Image.open(image_file)
+        text = pytesseract.image_to_string(image)
+        titles = [line.strip() for line in text.split("\n") if line.strip()]
+        return Response({"titles": titles})
+
+# Recommendations endpoint using Cohere embeddings
 class RecommendationsView(APIView):
     def post(self, request):
-        """
-        Expects JSON body:
-        {
-            "device_id": "<device id>",
-            "preferences": {
-                "favorite_genres": [...],
-                "reading_intent": [...],
-                "reading_preferences": [...],
-                "avoid_types": [...]
-            },
-            "detected_books": [
-                {"title": "...", "author": "..."}
-            ]
-        }
-        """
         data = request.data
         prefs = data.get("preferences", {})
         detected_books = data.get("detected_books", [])
 
-        # Step 1: Convert preferences into a single string for embedding
         pref_text = " ".join(
             prefs.get("favorite_genres", []) +
             prefs.get("reading_intent", []) +
@@ -196,26 +171,19 @@ class RecommendationsView(APIView):
             prefs.get("avoid_types", [])
         )
 
-        # Step 2: Create embedding for preferences
         try:
-            pref_embedding = openai.embeddings.create(
-                input=pref_text,
-                model="text-embedding-3-large"
-            )["data"][0]["embedding"]
+            pref_embedding = co.embed(model="small", texts=[pref_text]).embeddings[0]
         except Exception as e:
             print("Embedding error:", e)
             pref_embedding = None
 
         recommendations = []
-
-        # Step 3: For each detected book, fetch metadata and calculate similarity
         for book in detected_books:
             title = book.get("title")
             author = book.get("author")
             if not title:
                 continue
 
-            # Fetch metadata from Google Books API
             google_resp = requests.get(
                 "https://www.googleapis.com/books/v1/volumes",
                 params={"q": f"intitle:{title}+inauthor:{author}", "maxResults": 1}
@@ -227,17 +195,10 @@ class RecommendationsView(APIView):
             info = google_resp["items"][0]["volumeInfo"]
             book_text = f"{info.get('title')} {' '.join(info.get('authors', []))} {' '.join(info.get('categories', []))}"
 
-            # Optional: compute similarity (simple cosine)
             if pref_embedding:
                 try:
-                    book_embedding = openai.embeddings.create(
-                        input=book_text,
-                        model="text-embedding-3-large"
-                    )["data"][0]["embedding"]
-                    # Cosine similarity
-                    sim = np.dot(pref_embedding, book_embedding) / (
-                        np.linalg.norm(pref_embedding) * np.linalg.norm(book_embedding)
-                    )
+                    book_embedding = co.embed(model="small", texts=[book_text]).embeddings[0]
+                    sim = np.dot(pref_embedding, book_embedding) / (np.linalg.norm(pref_embedding) * np.linalg.norm(book_embedding))
                 except:
                     sim = 0
             else:
@@ -250,8 +211,5 @@ class RecommendationsView(APIView):
                 "score": sim
             })
 
-        # Step 4: Sort by similarity score descending
         recommendations = sorted(recommendations, key=lambda x: x["score"], reverse=True)
-
-        # Step 5: Return top 10 recommendations (or all if fewer)
         return Response({"books": recommendations[:10]})
