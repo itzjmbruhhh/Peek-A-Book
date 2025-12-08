@@ -37,6 +37,18 @@ class PresetListCreateView(APIView):
         return Response(serializer.errors, status=400)
 
 
+class PresetDetailView(APIView):
+    """Handle retrieving and deleting a single preset belonging to the device."""
+    def delete(self, request, pk):
+        try:
+            preset = DevicePreset.objects.get(pk=pk, device_id=request.device_id)
+        except DevicePreset.DoesNotExist:
+            return Response({"error": "Preset not found"}, status=404)
+
+        preset.delete()
+        return Response(status=204)
+
+
 # -------------------------
 # Saved Books API
 # -------------------------

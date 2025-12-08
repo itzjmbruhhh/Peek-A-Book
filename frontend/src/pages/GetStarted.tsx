@@ -6,7 +6,7 @@
  */
 import "../styles/pages/GetStarted.css";
 import Upload_Results from "./Upload_Results";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import questions from "../utils/Questions.json";
 
 interface QuestionSection {
@@ -56,7 +56,6 @@ function GetStarted() {
   const [presets, setPresets] = useState<Preset[]>([]);
   const [selectedPresetId, setSelectedPresetId] = useState<number | "">("");
   const [recommendedBooks, setRecommendedBooks] = useState<any[]>([]);
-  const [proceedError, setProceedError] = useState("");
 
   useEffect(() => {
     let id = localStorage.getItem("deviceId");
@@ -104,8 +103,6 @@ function GetStarted() {
         : [...current, choice];
       return { ...prev, [sectionId]: updated };
     });
-    // Clear any proceed error when user makes a selection
-    setProceedError("");
   };
 
   const handlePresetSelect = (presetId: number) => {
@@ -130,6 +127,51 @@ function GetStarted() {
 
     setPresetName("");
     setSavePresetChecked(false);
+  };
+
+  const handleDeletePreset = async () => {
+    if (!selectedPresetId) return;
+    if (!deviceId) return console.error("Device ID not set");
+    const confirmed = window.confirm(
+      "Delete this preset? This cannot be undone."
+    );
+    if (!confirmed) return;
+
+    try {
+      const res = await fetch(
+        `http://localhost:8000/api/preferences/${selectedPresetId}/`,
+        {
+          method: "DELETE",
+          headers: { "X-DEVICE-ID": deviceId },
+        }
+      );
+
+      if (!res.ok) {
+        const err = await res.text();
+        console.error("Failed to delete preset:", err);
+        return;
+      }
+
+      // Remove from local state and clear selection
+      setPresets((prev) =>
+        prev.filter((p) => p.id !== (selectedPresetId as number))
+      );
+      setSelectedPresetId("");
+      setSelected({
+        favorite_genres: [],
+        reading_intent: [],
+        reading_preferences: [],
+        avoid_types: [],
+      });
+      setAnswers({
+        favorite_genres: [],
+        reading_intent: [],
+        reading_preferences: [],
+        avoid_types: [],
+      });
+    } catch (err) {
+      console.error("Error deleting preset:", err);
+    }
   };
 
   const savePreset = async () => {
@@ -159,25 +201,16 @@ function GetStarted() {
   };
 
   const handleProceed = async () => {
-    // Require at least one selected preference before proceeding,
-    // unless the user has checked "Save Preset" (they may want to save empty preset)
-    const anySelected =
-      answers.favorite_genres.length > 0 ||
-      answers.reading_intent.length > 0 ||
-      answers.reading_preferences.length > 0 ||
-      answers.avoid_types.length > 0;
-
-    if (!anySelected && !savePresetChecked) {
-      setProceedError(
-        "Please select at least one preference before proceeding."
-      );
-      return;
-    }
-
-    setProceedError("");
     await savePreset();
     setUploadOpen(true);
   };
+
+  const allQuestionsAnswered = useMemo(() => {
+    return questions.every((section) => {
+      const vals = answers[section.id as CategoryKey] as string[] | undefined;
+      return Array.isArray(vals) && vals.length > 0;
+    });
+  }, [answers]);
 
   return (
     <section id="Get-Started">
@@ -191,7 +224,7 @@ function GetStarted() {
             <label className="block mb-2 font-medium">
               Select a saved preset:
             </label>
-            <div className="relative">
+            <div className="relative flex">
               <select
                 value={selectedPresetId}
                 onChange={(e) => {
@@ -216,7 +249,7 @@ function GetStarted() {
                     handlePresetSelect(Number(val));
                   }
                 }}
-                className="appearance-none mt-1 px-4 py-2 w-full xl:w-[20%] border rounded-md text-sm text-left bg-(--color-secondary)"
+                className="appearance-none px-4 py-2 w-full xl:w-[20%] border rounded-md text-sm text-left bg-(--color-secondary)"
               >
                 <option value="">-- None --</option>
                 {presets.map((p) => (
@@ -225,6 +258,14 @@ function GetStarted() {
                   </option>
                 ))}
               </select>
+              <button
+                type="button"
+                onClick={handleDeletePreset}
+                disabled={selectedPresetId === ""}
+                className="ml-2 px-3 rounded-md bg-(--color-red) text-white disabled:opacity-50"
+              >
+                Delete
+              </button>
             </div>
           </div>
         )}
@@ -233,7 +274,7 @@ function GetStarted() {
           {questions.map((section: QuestionSection) => (
             <div key={section.id} className="mb-12">
               <h2 className="h2 question">{section.question}</h2>
-              <h4 className="h4">Check all that apply.</h4>
+              <h4 className="h4">Check all that apply. Atleast 1 required.</h4>
               <div className="checkbox-container mt-4">
                 {section.choices.map((choice) => (
                   <label
@@ -281,16 +322,21 @@ function GetStarted() {
           </div>
         </div>
 
-        <div className="flex flex-col items-center md:items-end xl:items-end gap-1 px-2 xl:mr-20">
+        <div className="flex flex-col items-center md:items-end xl:items-end! gap-1 px-2 xl:mr-20">
           <label className="text-lg font-medium text-(--color-text-primary)">
-            Ready to upload photo?
+            {allQuestionsAnswered
+              ? "Ready to upload your photo?"
+              : "Check atleast one box per question before proceeding"}
           </label>
-          <button className="getStarted mt-0! mx-2" onClick={handleProceed}>
+          <button
+            className={`getStarted mt-0! ${
+              !allQuestionsAnswered ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+            onClick={handleProceed}
+            disabled={!allQuestionsAnswered}
+          >
             Proceed
           </button>
-          {proceedError && (
-            <p className="text-red-500 text-sm mt-2">{proceedError}</p>
-          )}
         </div>
 
         {uploadOpen && (

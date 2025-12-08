@@ -61,7 +61,7 @@ function Upload({
         <div className="overlay z-50 flex items-center justify-center">
           <div className="flex flex-col items-center gap-4">
             <div className="w-16 h-16 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
-            <p className="text-white">Uploading and Generating Recommendations...</p>
+            <p className="text-white text-center">Uploading and Generating Recommendations...</p>
           </div>
         </div>
       )}
