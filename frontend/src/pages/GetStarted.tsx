@@ -56,6 +56,7 @@ function GetStarted() {
   const [presets, setPresets] = useState<Preset[]>([]);
   const [selectedPresetId, setSelectedPresetId] = useState<number | "">("");
   const [recommendedBooks, setRecommendedBooks] = useState<any[]>([]);
+  const [proceedError, setProceedError] = useState("");
 
   useEffect(() => {
     let id = localStorage.getItem("deviceId");
@@ -103,6 +104,8 @@ function GetStarted() {
         : [...current, choice];
       return { ...prev, [sectionId]: updated };
     });
+    // Clear any proceed error when user makes a selection
+    setProceedError("");
   };
 
   const handlePresetSelect = (presetId: number) => {
@@ -156,6 +159,22 @@ function GetStarted() {
   };
 
   const handleProceed = async () => {
+    // Require at least one selected preference before proceeding,
+    // unless the user has checked "Save Preset" (they may want to save empty preset)
+    const anySelected =
+      answers.favorite_genres.length > 0 ||
+      answers.reading_intent.length > 0 ||
+      answers.reading_preferences.length > 0 ||
+      answers.avoid_types.length > 0;
+
+    if (!anySelected && !savePresetChecked) {
+      setProceedError(
+        "Please select at least one preference before proceeding."
+      );
+      return;
+    }
+
+    setProceedError("");
     await savePreset();
     setUploadOpen(true);
   };
@@ -217,14 +236,21 @@ function GetStarted() {
               <h4 className="h4">Check all that apply.</h4>
               <div className="checkbox-container mt-4">
                 {section.choices.map((choice) => (
-                  <label key={choice} className="checkbox flex items-center mb-2">
+                  <label
+                    key={choice}
+                    className="checkbox flex items-center mb-2"
+                  >
                     <input
                       type="checkbox"
                       checked={selected[section.id]?.includes(choice) ?? false}
-                      onChange={() => handleChange(section.id as CategoryKey, choice)}
+                      onChange={() =>
+                        handleChange(section.id as CategoryKey, choice)
+                      }
                       className="min-w-6 min-h-6 accent-(--color-red) md:w-6 md:h-6 xl:w-8 xl:h-8"
                     />
-                    <span className="ml-2 md:text-xl xl:text-2xl">{choice}</span>
+                    <span className="ml-2 md:text-xl xl:text-2xl">
+                      {choice}
+                    </span>
                   </label>
                 ))}
               </div>
@@ -241,7 +267,9 @@ function GetStarted() {
                 onChange={() => setSavePresetChecked((prev) => !prev)}
                 className="min-w-6 min-h-6 accent-(--color-red) md:w-6 md:h-6 xl:w-8 xl:h-8"
               />
-              <span className="ml-2 md:text-xl xl:text-2xl font-bold">Save Preset</span>
+              <span className="ml-2 md:text-xl xl:text-2xl font-bold">
+                Save Preset
+              </span>
             </label>
             <input
               type="text"
@@ -260,6 +288,9 @@ function GetStarted() {
           <button className="getStarted mt-0! mx-2" onClick={handleProceed}>
             Proceed
           </button>
+          {proceedError && (
+            <p className="text-red-500 text-sm mt-2">{proceedError}</p>
+          )}
         </div>
 
         {uploadOpen && (
