@@ -1,28 +1,25 @@
-/**
- * Component: ImageUpload
- * Purpose: Provides an image selection UI with click-to-select,
- * drag-and-drop support, preview and removal. Returns a local
- * preview via `URL.createObjectURL` for quick client-side preview.
- * Used inside the upload modal.
- */
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
-function ImageUpload() {
+type ImageUploadProps = {
+  onFileSelect?: (file: File) => void;
+};
+
+function ImageUpload({ onFileSelect }: ImageUploadProps) {
   const [image, setImage] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // handle file selection
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setImage(e.target.files[0]);
+      onFileSelect?.(e.target.files[0]);
     }
   };
 
-  // handle drag-and-drop
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
       setImage(e.dataTransfer.files[0]);
+      onFileSelect?.(e.dataTransfer.files[0]);
     }
   };
 
@@ -30,13 +27,14 @@ function ImageUpload() {
     e.preventDefault();
   };
 
-  const removeImage = () => setImage(null);
+  const removeImage = () => {
+    setImage(null);
+    onFileSelect?.(null as any); // optional: notify parent of removal
+  };
 
   return (
     <div className="image-group rounded-md p-4 w-full max-w-sm">
-      <h1 className="text-xl font-semibold my-2 md:text-2xl xl:text-2xl">
-        Upload your photo
-      </h1>
+      <h1 className="text-xl font-semibold my-2 md:text-2xl xl:text-2xl">Upload your photo</h1>
 
       <div
         className={`w-full border-3 border-dashed rounded-md flex items-center justify-center cursor-pointer overflow-hidden ${
@@ -70,7 +68,6 @@ function ImageUpload() {
         </div>
       )}
 
-      {/* Hidden file input */}
       <input
         type="file"
         accept="image/*"

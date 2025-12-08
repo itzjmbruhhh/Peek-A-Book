@@ -1,34 +1,64 @@
-/**
- * Page/Component: Upload
- * Purpose: Modal content for uploading an image. Renders the
- * `ImageUpload` component and provides Cancel/Proceed actions.
- */
-import React from "react";
+import React, { useState } from "react";
 import "../styles/pages/Upload-Results.css";
 import ImageUpload from "../components/ImageUpload";
 
 type UploadProps = {
   onClose: () => void;
   onProceed: () => void;
+  answers: any;
+  setRecommendedBooks: (books: any[]) => void;
 };
 
-function Upload({ onClose, onProceed }: UploadProps) {
+function Upload({
+  onClose,
+  onProceed,
+  answers,
+  setRecommendedBooks,
+}: UploadProps) {
+  const [file, setFile] = useState<File | null>(null);
+
+  const handleFileChange = (selected: File) => setFile(selected);
+
+  const handleUpload = async () => {
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append("image", file);
+    formData.append("preferences", JSON.stringify(answers));
+
+    // Send deviceId as header
+    const res = await fetch("http://localhost:8000/api/upload-shelf/", {
+      method: "POST",
+      headers: {
+        "X-DEVICE-ID": localStorage.getItem("deviceId") || "",
+      },
+      body: formData,
+    });
+
+    if (!res.ok) {
+      console.error("Upload failed", await res.text());
+      return;
+    }
+
+    const data = await res.json();
+    console.log("Detected books:", data.books);
+    setRecommendedBooks(data.books || []);
+    onProceed();
+  };
+
   return (
     <div className="container">
       <button onClick={onClose}>
         <i className="las la-times absolute top-3 right-3 text-3xl cursor-pointer"></i>
       </button>
 
-      {/* Image Group */}
-      <ImageUpload />
+      <ImageUpload onFileSelect={handleFileChange} />
 
-      {/* Button Group */}
       <div className="flex gap-5 w-full md:w-[90%] md:mb-2 xl:w-[91%] xl:mb-2">
         <button className="button cancel" onClick={onClose}>
           Cancel
         </button>
-
-        <button className="button proceed" onClick={onProceed}>
+        <button className="button proceed" onClick={handleUpload}>
           Proceed
         </button>
       </div>

@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from pathlib import Path
 from decouple import config
 import os
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,6 +26,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECRET_KEY = 'django-insecure-*v2%=_-0kcmm2f*2&%i(tnd24j2#-v(2tk$d$81s%y=6y0kb0^'
 
 SECRET_KEY = config('SECRET_KEY')
+
+# Load .env file
+load_dotenv()
+
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config("DEBUG", default=False, cast=bool)
