@@ -1,6 +1,5 @@
 import React from "react";
 import "../styles/pages/Upload-Results.css";
-import Dropdown from "../components/Dropdown";
 import ImageUpload from "../components/ImageUpload";
 
 type UploadProps = {
@@ -19,7 +18,7 @@ function Upload({ onClose, onProceed }: UploadProps) {
       <ImageUpload />
 
       {/* Button Group */}
-      <div className="flex gap-5 mt-15 w-full md:w-[90%] md:mb-2 xl:w-[91%] xl:mb-2">
+      <div className="flex gap-5 w-full md:w-[90%] md:mb-2 xl:w-[91%] xl:mb-2">
         <button className="button cancel" onClick={onClose}>
           Cancel
         </button>
