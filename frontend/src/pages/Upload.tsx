@@ -18,12 +18,6 @@ function Upload({ onClose, onProceed }: UploadProps) {
       {/* Image Group */}
       <ImageUpload />
 
-      {/* Preset Group */}
-      <div className="md:w-full md:px-4 xl:w-full xl:px-4">
-        <h2 className="text-md font-semibold">Select Preset</h2>
-        <Dropdown />
-      </div>
-
       {/* Button Group */}
       <div className="flex gap-5 mt-15 w-full md:w-[90%] md:mb-2 xl:w-[91%] xl:mb-2">
         <button className="button cancel" onClick={onClose}>
