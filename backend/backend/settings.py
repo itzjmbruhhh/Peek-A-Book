@@ -41,12 +41,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    "corsheaders",
     'api',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.common.CommonMiddleware',
     'api.middleware.DeviceAuthMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -54,6 +56,21 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+]
+
+from corsheaders.defaults import default_headers, default_methods
+
+
+# Allow custom headers
+CORS_ALLOW_HEADERS = list(default_headers) + [
+    "x-device-id",
+]
+
+# Allow all methods (GET, POST, OPTIONS, etc.)
+CORS_ALLOW_METHODS = list(default_methods)
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
