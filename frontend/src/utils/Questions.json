@@ -1,0 +1,58 @@
+[
+  {
+    "id": "favorite_genres",
+    "question": "What kinds of stories or topics do you usually enjoy?",
+    "choices": [
+      "Fiction",
+      "Non-Fiction",
+      "Mystery/Crime",
+      "Sci-Fi",
+      "Historical",
+      "Biography/Memoir",
+      "Self-Help/Personal Growth",
+      "Science & Technology",
+      "Business / Economics",
+      "Philosophy",
+      "Art & Creativity"
+    ]
+  },
+  {
+    "id": "reading_intent",
+    "question": "What’s your usual intent when you read?",
+    "choices": [
+      "To Relax",
+      "To learn something",
+      "To get inspired",
+      "To escape into a story",
+      "To improve a skill",
+      "To challenge myself",
+      "To understand people",
+      "To feel entertained"
+    ]
+  },
+  {
+    "id": "reading_preferences",
+    "question": "What type of reading experience do you prefer?",
+    "choices": [
+      "Short, quick reads",
+      "Long, immersive books",
+      "Character-driven",
+      "Plot-driven",
+      "Idea-driven",
+      "Visual/illustrated"
+    ]
+  },
+  {
+    "id": "avoid_types",
+    "question": "Are there types of books you usually avoid?",
+    "choices": [
+      "Slow plots",
+      "Heavy technical content",
+      "Graphic violence",
+      "Romance-heavy",
+      "Very long books",
+      "Dystopian themes",
+      "Overly academic writing"
+    ]
+  }
+]
