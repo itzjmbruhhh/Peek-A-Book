@@ -9,7 +9,6 @@ Peek-A-Book is a small side project that helps readers discover books from photo
 
 This README documents how to set up and run the project locally, the dependencies used, and how the system works. I will add image documentation for each page (Home, Get Started, Upload, Results, etc.) — placeholders are included below where you can paste images and descriptions.
 
---
 
 ## Contents
 
@@ -22,7 +21,6 @@ This README documents how to set up and run the project locally, the dependencie
 - Troubleshooting & tips
 - Notes on the AI model and limitations
 
---
 
 ## Dependencies
 
@@ -39,7 +37,7 @@ Backend
   ```bash
   pip install django djangorestframework python-decouple python-dotenv corsheaders cohere easyocr numpy pillow
   # easyocr requires a working torch installation. For CPU-only, install torch like:
-  pip install torch --index-url https://download.pytorch.org/whl/cpu
+  pip install torchindex-url https://download.pytorch.org/whl/cpu
   ```
 
 - Environment variables used (see `backend/backend/settings.py`):
@@ -51,7 +49,6 @@ Backend
 
 Create a `.env` file in the `backend` folder or export these variables in your shell before running the server.
 
---
 
 ## Backend setup (quick)
 
@@ -71,7 +68,6 @@ python manage.py runserver
 
 The API runs on `http://localhost:8000` by default. The backend expects an `X-DEVICE-ID` header on requests (the frontend generates/stores a device id in localStorage).
 
---
 
 ## Frontend setup (quick)
 
@@ -83,7 +79,6 @@ npm run dev
 
 The frontend dev server (Vite) runs on `http://localhost:5173` by default. The frontend calls the Django API at `http://localhost:8000` — make sure the backend is running and CORS is configured (the project already allows `http://localhost:5173`).
 
---
 
 ## How it works (high-level)
 
@@ -98,7 +93,6 @@ Notes:
 - The backend uses an internal throttle to protect the free-tier APIs from abuse (you may see `429 Too Many Requests` if you exceed the rate).
 - The LLM is used only to score / explain the detected titles — the system is designed not to hallucinate new titles. If the model returns non-JSON or unexpected output the frontend attempts to parse common formats but may need manual review.
 
---
 
 ## Demo Video
 
@@ -110,7 +104,6 @@ Notes:
   </a>
 </p>
 
---
 
 ## Pages / Screens
 
@@ -152,7 +145,6 @@ Notes:
 
 * Description: Shows detected books, cover images (when available), and a short "why it fits" explanation for each recommended title.
 
---
 
 ## Troubleshooting & tips
 
@@ -161,7 +153,6 @@ Notes:
 - Missing covers: The assistant tries to provide real cover URLs when it can identify ISBNs/OLIDs; otherwise a placeholder image is shown.
 - CORS issues: If you change frontend or backend ports, update `CORS_ALLOWED_ORIGINS` in `backend/backend/settings.py`.
 
---
 
 ## AI model used & limitations
 
@@ -171,15 +162,3 @@ Notes:
 Recommendations:
 
 - For more reliable production behavior consider provisioning a paid API key with higher rate limits and availability, and/or running local LLMs that match your latency and privacy requirements.
-
---
-
-## Contributing
-
-Pull requests and issues are welcome. If you add images for the README or update docs, please keep them in `frontend/public` or `frontend/src/assets` and reference them from this README.
-
---
-
-## License
-
-This project is provided as-is for learning/demo purposes. Add your preferred license if you plan to redistribute.
