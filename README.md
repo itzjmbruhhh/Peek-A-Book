@@ -117,7 +117,7 @@ Notes:
 ### Home Page
 
 <p align="center">
-  <img src="frontend/public/images/Home.png" alt="Home page" style="max-width:100%;height:auto;">
+  <img src="images/Home.png" alt="Home page" style="max-width:100%;height:auto;">
 </p>
 
 * Description: Entry point with brief intro and links to Get Started and About pages.
