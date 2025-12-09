@@ -9,7 +9,6 @@ Peek-A-Book is a small side project that helps readers discover books from photo
 
 This README documents how to set up and run the project locally, the dependencies used, and how the system works. I will add image documentation for each page (Home, Get Started, Upload, Results, etc.) — placeholders are included below where you can paste images and descriptions.
 
-
 ## Contents
 
 - Overview
@@ -20,7 +19,6 @@ This README documents how to set up and run the project locally, the dependencie
 - Pages / Screens (placeholders for images + descriptions)
 - Troubleshooting & tips
 - Notes on the AI model and limitations
-
 
 ## Dependencies
 
@@ -49,7 +47,6 @@ Backend
 
 Create a `.env` file in the `backend` folder or export these variables in your shell before running the server.
 
-
 ## Backend setup (quick)
 
 From the project root:
@@ -68,7 +65,6 @@ python manage.py runserver
 
 The API runs on `http://localhost:8000` by default. The backend expects an `X-DEVICE-ID` header on requests (the frontend generates/stores a device id in localStorage).
 
-
 ## Frontend setup (quick)
 
 ```bash
@@ -78,7 +74,6 @@ npm run dev
 ```
 
 The frontend dev server (Vite) runs on `http://localhost:5173` by default. The frontend calls the Django API at `http://localhost:8000` — make sure the backend is running and CORS is configured (the project already allows `http://localhost:5173`).
-
 
 ## How it works (high-level)
 
@@ -95,7 +90,13 @@ Notes:
 
 ## Demo Video
 
-[Watch the demo video](images/peek-a-book-demo.mp4)
+- Watch the demo on YouTube: https://youtu.be/UNXW0cT0J4o
+
+<p align="center">
+  <a href="https://youtu.be/UNXW0cT0J4o" target="_blank" rel="noopener noreferrer">
+    <img src="https://img.youtube.com/vi/UNXW0cT0J4o/maxresdefault.jpg" alt="Peek-A-Book demo thumbnail" width="640" />
+  </a>
+</p>
 
 ## Pages / Screens
 
@@ -105,7 +106,7 @@ Notes:
   <img src="images/Home.png" alt="Home Page" style="max-width:100%;height:auto;">
 </p>
 
-* Description: Entry point with brief intro and links to Get Started and About pages.
+- Description: Entry point with brief intro and links to Get Started and About pages.
 
 ### Get Started
 
@@ -113,7 +114,7 @@ Notes:
   <img src="images/GetStarted.png" alt="Get Started Page" style="max-width:100%;height:auto;">
 </p>
 
-* Description: Choose your reading preferences and optionally save them as a preset tied to your device ID.
+- Description: Choose your reading preferences and optionally save them as a preset tied to your device ID.
 
 ### Upload
 
@@ -121,7 +122,7 @@ Notes:
   <img src="images/Upload.png" alt="Upload Modal" style="max-width:100%;height:auto;">
 </p>
 
-* Description: Upload a photo of your shelf. The app sends the image and your preferences to the backend for OCR + recommendation.
+- Description: Upload a photo of your shelf. The app sends the image and your preferences to the backend for OCR + recommendation.
 
 ### Results
 
@@ -135,8 +136,7 @@ Notes:
   <img src="images/Results-Extended.png" alt="Results-Extended Modal" style="max-width:100%;height:auto;">
 </p>
 
-* Description: Shows detected books, cover images (when available), and a short "why it fits" explanation for each recommended title.
-
+- Description: Shows detected books, cover images (when available), and a short "why it fits" explanation for each recommended title.
 
 ## Troubleshooting & tips
 
@@ -144,7 +144,6 @@ Notes:
 - Rate limits: Backend is throttled to protect free APIs. If you hit a `429`, wait for the Retry-After period and try again. The frontend shows a message when this happens.
 - Missing covers: The assistant tries to provide real cover URLs when it can identify ISBNs/OLIDs; otherwise a placeholder image is shown.
 - CORS issues: If you change frontend or backend ports, update `CORS_ALLOWED_ORIGINS` in `backend/backend/settings.py`.
-
 
 ## AI model used & limitations
 
