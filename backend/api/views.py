@@ -95,6 +95,11 @@ class UploadShelfView(APIView):
             Task:
             Recommend 5–10 books the user is likely to enjoy based on the detected titles and the user's preferences.
 
+            Recommendation rules:
+            1. You must ONLY recommend books that appear in the detected list above.
+            2. Do not invent new books.
+            3. Do not substitute or suggest alternatives. Only include books from the photo.
+            
             For each recommended book, return a JSON object with:
             - "title"
             - "author"
@@ -114,9 +119,6 @@ class UploadShelfView(APIView):
 
             Your output must be a valid JSON array with no extra text.
             """
-
-
-
 
             # ---------------------------
             # Step 3: Call Cohere chat
