@@ -38,7 +38,7 @@ function ImageUpload({ onFileSelect }: ImageUploadProps) {
 
       <div
         className={`w-full border-3 border-dashed rounded-md flex items-center justify-center cursor-pointer overflow-hidden ${
-          image ? "h-auto" : "h-60 p-6 text-center text-2xl"
+          image ? "h-50" : "h-60 p-6 text-center text-2xl"
         }`}
         onClick={() => fileInputRef.current?.click()}
         onDrop={handleDrop}
