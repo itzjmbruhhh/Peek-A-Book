@@ -93,16 +93,9 @@ Notes:
 - The backend uses an internal throttle to protect the free-tier APIs from abuse (you may see `429 Too Many Requests` if you exceed the rate).
 - The LLM is used only to score / explain the detected titles — the system is designed not to hallucinate new titles. If the model returns non-JSON or unexpected output the frontend attempts to parse common formats but may need manual review.
 
-
 ## Demo Video
 
-<p align="center">
-  <video width="640" controls>
-    <source src="images/peek-a-book-demo.mp4" type="video/mp4">
-    Your browser does not support the video tag. <a href="images/peek-a-book-demo.mp4">Download the video demo</a>.
-  </video>
-</p>
-
+[Watch the demo video](images/peek-a-book-demo.mp4)
 
 ## Pages / Screens
 
