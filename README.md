@@ -96,12 +96,11 @@ Notes:
 
 ## Demo Video
 
-- Watch the demo on YouTube (replace with your video id): https://youtu.be/YOUR_VIDEO_ID
-
 <p align="center">
-  <a href="https://youtu.be/YOUR_VIDEO_ID" target="_blank" rel="noopener noreferrer">
-    <img src="https://img.youtube.com/vi/YOUR_VIDEO_ID/maxresdefault.jpg" alt="Peek-A-Book demo thumbnail" width="640" />
-  </a>
+  <video width="640" controls>
+    <source src="images/peek-a-book-demo.mp4" type="video/mp4">
+    Your browser does not support the video tag. <a href="images/peek-a-book-demo.mp4">Download the video demo</a>.
+  </video>
 </p>
 
 
