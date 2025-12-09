@@ -82,30 +82,40 @@ class UploadShelfView(APIView):
             # Step 2: Build structured prompt for Cohere
             # ---------------------------
             prompt = f"""
-                You are a book recommendation assistant.
+            You are a book recommendation assistant.
 
-                Detected books: {detected_titles}
+            Detected books: {detected_titles}
 
-                User preferences:
-                - Favorite genres: {preferences.get('favorite_genres', [])}
-                - Reading intent: {preferences.get('reading_intent', [])}
-                - Reading preferences: {preferences.get('reading_preferences', [])}
-                - Avoid types: {preferences.get('avoid_types', [])}
+            User preferences:
+            - Favorite genres: {preferences.get('favorite_genres', [])}
+            - Reading intent: {preferences.get('reading_intent', [])}
+            - Reading preferences: {preferences.get('reading_preferences', [])}
+            - Avoid types: {preferences.get('avoid_types', [])}
 
-                Task: Recommend 5–10 books the user is likely to enjoy. 
-                For each book, include the following fields in a JSON array:
-                - "title" (string)
-                - "author" (string)
-                - "description" (short description)
-                - "reason_it_fits" (why this book matches the user's preferences)
-                - "image" (URL of the book cover)
+            Task:
+            Recommend 5–10 books the user is likely to enjoy based on the detected titles and the user's preferences.
 
-                Instructions for "image":
-                - Try to find the cover image from Google Books metadata or Open Library API.
-                - If you cannot find a real cover, use a placeholder URL like "https://placehold.co/97x150".
+            For each recommended book, return a JSON object with:
+            - "title"
+            - "author"
+            - "description"
+            - "reason_it_fits"
+            - "image"
 
-                Return **valid JSON only**, do not include any text outside the JSON.
-                """
+            Image sourcing rules:
+            1. If possible, include a real cover image URL using the Open Library Covers API.
+            2. Only use REAL ISBN or OLID values. 
+            Example formats (you must replace with actual values):
+                - https://covers.openlibrary.org/b/isbn/9780143127741.jpg
+                - https://covers.openlibrary.org/b/olid/OL26331930M.jpg
+            3. Never output placeholders like (ISBN), (OLID), or similar.
+            4. If you cannot determine any valid ISBN/OLID for a book, use:
+            "https://placehold.co/97x150"
+
+            Your output must be a valid JSON array with no extra text.
+            """
+
+
 
 
             # ---------------------------
@@ -113,7 +123,7 @@ class UploadShelfView(APIView):
             # ---------------------------
             try:
                 llm_response = co.chat(
-                    model="command-a-reasoning-08-2025",  # supported model
+                    model="command-xlarge-nightly",  # supported model
                     message=prompt
                 )
 
