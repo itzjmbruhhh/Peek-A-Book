@@ -131,6 +131,11 @@ class UploadShelfView(APIView):
             "https://placehold.co/97x150"
 
             Your output must be a valid JSON array with no extra text.
+            You must return ONLY a valid JSON array. 
+            No explanation. 
+            No prose. 
+            No markdown fences. 
+            If no books detected, return [].
             """
 
             # ---------------------------
