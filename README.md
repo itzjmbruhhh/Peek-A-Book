@@ -100,6 +100,18 @@ Notes:
 
 --
 
+## Demo Video
+
+- Watch the demo on YouTube (replace with your video id): https://youtu.be/YOUR_VIDEO_ID
+
+<p align="center">
+  <a href="https://youtu.be/YOUR_VIDEO_ID" target="_blank" rel="noopener noreferrer">
+    <img src="https://img.youtube.com/vi/YOUR_VIDEO_ID/maxresdefault.jpg" alt="Peek-A-Book demo thumbnail" width="640" />
+  </a>
+</p>
+
+--
+
 ## Pages / Screens (add images and descriptions here)
 
 ### Home Page
