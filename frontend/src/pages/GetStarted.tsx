@@ -30,7 +30,8 @@ type Preset = {
   id: number;
   name: string | null;
   favorite_genres: string[];
-  reading_intents: string[];
+  // backend model uses `reading_interests`
+  reading_interests: string[];
   reading_experience: string[];
   avoid_types: string[];
 };
@@ -44,7 +45,13 @@ type CategoryKey =
 function GetStarted() {
   const [deviceId, setDeviceId] = useState("");
   const [uploadOpen, setUploadOpen] = useState(false);
-  const [selected, setSelected] = useState<SelectedPrefs>({});
+  // initialize all keys so checks like `selected[section.id]?.includes` are safe
+  const [selected, setSelected] = useState<SelectedPrefs>({
+    favorite_genres: [],
+    reading_intent: [],
+    reading_preferences: [],
+    avoid_types: [],
+  });
   const [answers, setAnswers] = useState<AnswersState>({
     favorite_genres: [],
     reading_intent: [],
@@ -113,14 +120,15 @@ function GetStarted() {
 
     setAnswers({
       favorite_genres: preset.favorite_genres,
-      reading_intent: preset.reading_intents,
+      // map backend `reading_interests` -> frontend `reading_intent`
+      reading_intent: (preset as any).reading_interests || [],
       reading_preferences: preset.reading_experience,
       avoid_types: preset.avoid_types,
     });
 
     setSelected({
       favorite_genres: preset.favorite_genres,
-      reading_intent: preset.reading_intents,
+      reading_intent: (preset as any).reading_interests || [],
       reading_preferences: preset.reading_experience,
       avoid_types: preset.avoid_types,
     });
@@ -178,7 +186,8 @@ function GetStarted() {
     if (!savePresetChecked) return;
     const payload = {
       favorite_genres: answers.favorite_genres,
-      reading_intents: answers.reading_intent,
+      // backend expects `reading_interests`
+      reading_interests: answers.reading_intent,
       reading_experience: answers.reading_preferences,
       avoid_types: answers.avoid_types,
       name: presetName || null,
@@ -194,7 +203,9 @@ function GetStarted() {
         body: JSON.stringify(payload),
       });
       const data = await res.json();
-      setPresets((prev) => [...prev, data]);
+      // POST returns { message, preset } — normalize to add the saved preset
+      const newPreset = data?.preset ?? data;
+      if (newPreset) setPresets((prev) => [...prev, newPreset]);
     } catch (err) {
       console.error(err);
     }
