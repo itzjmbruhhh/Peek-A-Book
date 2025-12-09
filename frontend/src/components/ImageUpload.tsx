@@ -33,7 +33,7 @@ function ImageUpload({ onFileSelect }: ImageUploadProps) {
   };
 
   return (
-    <div className="image-group rounded-md p-4 w-full max-w-sm">
+    <div className="image-group rounded-md p-4 w-full max-w-sm pt-0!">
       <h1 className="text-xl font-semibold my-2 md:text-2xl xl:text-2xl">Upload your photo</h1>
 
       <div

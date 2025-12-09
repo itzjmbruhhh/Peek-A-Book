@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "../styles/pages/Upload-Results.css";
 import ImageUpload from "../components/ImageUpload";
+import { useEffect } from "react";
 
 type UploadProps = {
   onClose: () => void;
@@ -17,6 +18,41 @@ function Upload({
 }: UploadProps) {
   const [file, setFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
+  const [retryUntil, setRetryUntil] = useState<number | null>(null);
+  const [retrySecondsLeft, setRetrySecondsLeft] = useState<number | null>(null);
+
+  // Quota configuration (mirror backend throttle: "5/minute")
+  const QUOTA_RATE = "5/minute";
+  const parseRate = (rate: string) => {
+    const [countStr, period] = rate.split("/");
+    const count = Number(countStr);
+    let seconds = 60;
+    if (period === "hour") seconds = 3600;
+    if (period === "day") seconds = 86400;
+    return { count, windowSeconds: seconds };
+  };
+  const { count: quotaCount, windowSeconds } = parseRate(QUOTA_RATE);
+  const perTokenRecharge = Math.round(windowSeconds / quotaCount);
+
+  useEffect(() => {
+    let t: number | undefined;
+    if (retryUntil) {
+      const update = () => {
+        const left = Math.max(0, Math.ceil((retryUntil - Date.now()) / 1000));
+        setRetrySecondsLeft(left);
+        if (left <= 0) {
+          setRetryUntil(null);
+          setRetrySecondsLeft(null);
+          if (t) window.clearInterval(t);
+        }
+      };
+      update();
+      t = window.setInterval(update, 1000);
+    }
+    return () => {
+      if (t) window.clearInterval(t);
+    };
+  }, [retryUntil]);
 
   const handleFileChange = (selected: File) => setFile(selected);
 
@@ -36,6 +72,17 @@ function Upload({
         },
         body: formData,
       });
+
+      // If server signals rate limit, capture Retry-After header (seconds)
+      if (res.status === 429) {
+        const retry = res.headers.get("Retry-After");
+        const retrySec = retry ? Number(retry) : windowSeconds;
+        setRetryUntil(Date.now() + retrySec * 1000);
+        setLoading(false);
+        const data = await res.json().catch(() => ({}));
+        console.error("Upload failed (rate limit):", data.error || data);
+        return;
+      }
 
       const data = await res.json();
 
@@ -57,11 +104,37 @@ function Upload({
 
   return (
     <div className="container relative">
+      {/* Show rate-limit notification only when server returns 429 */}
+      {retryUntil && (
+        <div className="rate-limit-notice mb-4 p-3 rounded-md bg-red-50 border border-red-200 text-sm text-red-900">
+          <strong>Rate limit exceeded:</strong>
+          {retrySecondsLeft != null ? (
+            <span>
+              {" "}
+              Try again in {retrySecondsLeft} second
+              {retrySecondsLeft !== 1 ? "s" : ""}.
+            </span>
+          ) : (
+            <span> Please try again later.</span>
+          )}
+          <button
+            onClick={() => {
+              setRetryUntil(null);
+              setRetrySecondsLeft(null);
+            }}
+            className="ml-3 underline"
+          >
+            Dismiss
+          </button>
+        </div>
+      )}
       {loading && (
         <div className="overlay z-50 flex items-center justify-center">
           <div className="flex flex-col items-center gap-4">
             <div className="w-16 h-16 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
-            <p className="text-white text-center">Uploading and Generating Recommendations...</p>
+            <p className="text-white text-center">
+              Uploading and Generating Recommendations...
+            </p>
           </div>
         </div>
       )}
@@ -77,10 +150,10 @@ function Upload({
         </button>
         <button
           className={`button proceed ${
-            loading ? "opacity-50 cursor-not-allowed" : ""
+            loading || retryUntil ? "opacity-50 cursor-not-allowed" : ""
           }`}
           onClick={handleUpload}
-          disabled={loading}
+          disabled={loading || !!retryUntil}
         >
           {loading ? "Uploading..." : "Proceed"}
         </button>
