@@ -46,21 +46,21 @@ function Results({ onClose, books }: ResultsProps) {
         Top picks from your photo
       </h1>
 
-      <div className="overflow-x-auto flex gap-4 snap-x snap-mandatory justify-center px-15 py-5">
+      <div className="overflow-x-auto flex gap-4 snap-x snap-mandatory px-4 py-5">
         {uniqueBooks.length > 0 ? (
           uniqueBooks.map((book, idx) => (
             <div
               key={idx}
-              className="book-card flex-none w-1/2! max-h-[300px]! sm:w-1/2 md:w-1/4 xl:w-1/4 snap-start"
+              className="book-card flex-none w-[150px] h-auto flex flex-col snap-start rounded-md"
             >
               <img
                 src={book.image || "https://placehold.co/97x150"}
                 alt={book.title}
-                className="book-image"
+                className="w-full h-[180px] object-cover rounded-md"
               />
               <div className="book-text">
-                <h3 className="book-title">{book.title}</h3>
-                <p className="author">{book.author}</p>
+                <h3 className="book-title line-clamp-1">{book.title}</h3>
+                <p className="author line-clamp-1">{book.author}</p>
               </div>
             </div>
           ))
