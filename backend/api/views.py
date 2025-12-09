@@ -46,6 +46,19 @@ class PresetDetailView(APIView):
 
         preset.delete()
         return Response(status=204)
+    
+    def put(self, request, pk):
+        """Update a preset owned by this device (partial update allowed)."""
+        try:
+            preset = DevicePreset.objects.get(pk=pk, device_id=request.device_id)
+        except DevicePreset.DoesNotExist:
+            return Response({"error": "Preset not found"}, status=404)
+
+        serializer = DevicePresetSerializer(preset, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=400)
 
 
 # -------------------------

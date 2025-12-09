@@ -194,6 +194,47 @@ function GetStarted() {
     };
     if (!deviceId) return console.error("Device ID not set");
     try {
+      // If a preset name was provided, check for an existing preset with the same name (case-insensitive)
+      const nameToCheck = presetName?.trim();
+      if (nameToCheck) {
+        const existing = presets.find(
+          (p) =>
+            p.name && p.name.trim().toLowerCase() === nameToCheck.toLowerCase()
+        );
+
+        if (existing) {
+          // Ask the user to confirm overwrite before proceeding
+          const confirmOverwrite = window.confirm(
+            `A preset named "${nameToCheck}" already exists. Overwrite it?`
+          );
+          if (!confirmOverwrite) return;
+          // overwrite existing preset via PUT
+          const res = await fetch(
+            `http://localhost:8000/api/preferences/${existing.id}/`,
+            {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+                "X-DEVICE-ID": deviceId,
+              },
+              body: JSON.stringify(payload),
+            }
+          );
+          if (!res.ok) {
+            const err = await res.text();
+            console.error("Failed to update preset:", err);
+          } else {
+            const updated = await res.json();
+            setPresets((prev) =>
+              prev.map((p) => (p.id === updated.id ? updated : p))
+            );
+            setSelectedPresetId(updated.id);
+          }
+          return;
+        }
+      }
+
+      // No existing preset with same name — create a new one
       const res = await fetch("http://localhost:8000/api/preferences/", {
         method: "POST",
         headers: {
@@ -205,7 +246,10 @@ function GetStarted() {
       const data = await res.json();
       // POST returns { message, preset } — normalize to add the saved preset
       const newPreset = data?.preset ?? data;
-      if (newPreset) setPresets((prev) => [...prev, newPreset]);
+      if (newPreset) {
+        setPresets((prev) => [...prev, newPreset]);
+        setSelectedPresetId(newPreset.id ?? "");
+      }
     } catch (err) {
       console.error(err);
     }
