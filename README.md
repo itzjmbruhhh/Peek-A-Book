@@ -117,34 +117,40 @@ Notes:
 ### Home Page
 
 <p align="center">
-  <img src="images/Home.png" alt="Home page" style="max-width:100%;height:auto;">
+  <img src="images/Home.png" alt="Home Page" style="max-width:100%;height:auto;">
 </p>
 
 * Description: Entry point with brief intro and links to Get Started and About pages.
 
 ### Get Started
 
-- IMAGE: (add screenshot here)
+<p align="center">
+  <img src="images/GetStarted.png" alt="Get Started Page" style="max-width:100%;height:auto;">
+</p>
 
 * Description: Choose your reading preferences and optionally save them as a preset tied to your device ID.
 
 ### Upload
 
-- IMAGE: (add screenshot here)
+<p align="center">
+  <img src="images/Upload.png" alt="Upload Modal" style="max-width:100%;height:auto;">
+</p>
 
 * Description: Upload a photo of your shelf. The app sends the image and your preferences to the backend for OCR + recommendation.
 
 ### Results
 
-- IMAGE: (add screenshot here)
+<p align="center">
+  <img src="images/Results.png" alt="Results Modal" style="max-width:100%;height:auto;">
+</p>
+
+### Extended Results
+
+<p align="center">
+  <img src="images/Results-Extended.png" alt="Results-Extended Modal" style="max-width:100%;height:auto;">
+</p>
 
 * Description: Shows detected books, cover images (when available), and a short "why it fits" explanation for each recommended title.
-
-### Presets
-
-- IMAGE: (add screenshot here)
-
-* Description: Saved reading preference presets — load, overwrite (by name), or delete.
 
 --
 
