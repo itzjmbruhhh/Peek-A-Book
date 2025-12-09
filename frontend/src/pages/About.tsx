@@ -19,12 +19,11 @@ function About() {
         {/* Title End */}
 
         {/* About Container Start */}
-        <div className="container-about flex-col! xl:flex-row! md:flex-row! gap-10">
+        <div className="container-about flex-col! xl:flex-row! md:flex-row! gap-10 p-3">
           {/* About Card Left Start */}
-          <div className="about-card xl:w-[70%] p-10! space-y-8">
-            
+          <div className="about-card xl:w-[70%] p-10! space-y-8 max-h-[458px] overflow-auto pr-4">
             {/* Section: How it works */}
-            <div>
+            <div className="pb-10">
               <h2 className="text-2xl font-semibold mb-4">How it works</h2>
               <ol className="list-decimal pl-6 space-y-2 text-lg">
                 <li>
@@ -50,8 +49,8 @@ function About() {
             <div>
               <h2 className="text-2xl font-semibold mb-4">Tech Stack</h2>
               <p className="text-lg">
-                Peek-A-Book is built with <strong>React</strong> for the frontend
-                and <strong>Django</strong> for the backend.
+                Peek-A-Book is built with <strong>React</strong> for the
+                frontend and <strong>Django</strong> for the backend.
               </p>
             </div>
 
@@ -59,8 +58,68 @@ function About() {
             <div>
               <h2 className="text-2xl font-semibold mb-4">AI Model</h2>
               <p className="text-lg">
-                The app uses free-tier AI models, so results may vary in quality.
+                The app uses free-tier AI models, so results may vary in
+                quality.
               </p>
+            </div>
+
+            {/* Section: Data & Privacy */}
+            <div>
+              <h2 className="text-2xl font-semibold mb-4">Data & Privacy</h2>
+              <p className="text-lg">
+                We only store a non-identifying device ID to let you save
+                reading presets. Uploaded images are processed by the server’s
+                OCR and AI pipelines and are not used for any other purpose. You
+                can delete saved presets at any time from the Get Started page.
+              </p>
+            </div>
+
+            {/* Section: Rate limits */}
+            <div>
+              <h2 className="text-2xl font-semibold mb-4">Rate Limits</h2>
+              <p className="text-lg">
+                To prevent abuse and keep the free backend responsive, uploads
+                are rate-limited. Typical limits are small (for example, 2
+                uploads per minute). If you hit the limit, the UI will show a
+                message with timing information.
+              </p>
+            </div>
+
+            {/* Section: How recommendations are generated */}
+            <div>
+              <h2 className="text-2xl font-semibold mb-4">
+                How recommendations are generated
+              </h2>
+              <p className="text-lg">
+                After extracting text from your photo, the system builds a
+                structured prompt and queries an AI model to match detected
+                titles to your reading preferences. The assistant returns a
+                curated set of matches and short explanations for why each book
+                fits your preferences.
+              </p>
+            </div>
+
+            {/* Section: Limitations & Tips */}
+            <div>
+              <h2 className="text-2xl font-semibold mb-4">
+                Limitations & Tips
+              </h2>
+              <ul className="list-disc pl-6 space-y-2 text-lg">
+                <li>
+                  OCR may miss or misread some titles from low-quality photos.
+                </li>
+                <li>
+                  AI recommendations are probabilistic and may vary between
+                  runs.
+                </li>
+                <li>
+                  For best results, use clear, well-lit photos of book spines or
+                  covers.
+                </li>
+                <li>
+                  Report issues or suggest improvements via the project repo.
+                </li>
+              </ul>
             </div>
           </div>
           {/* About Card Left End */}
@@ -81,8 +140,7 @@ function About() {
               <h2 className="text-2xl font-medium mb-3">Meet the Creator</h2>
               <p className="text-sm font-light">
                 <span className="text-xl font-normal">Hi, I am JM Reyes.</span>{" "}
-                <br />
-                I am a student developer specializing in Web and Machine
+                <br />I am a student developer specializing in Web and Machine
                 Learning Development. I built Peek-A-Book as a side project to
                 help fellow readers discover books easily with the help of AI.
               </p>
